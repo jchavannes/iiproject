@@ -28,3 +28,10 @@
 footer p {
     text-align: right;
 }
+
+.signup.container form,
+.login.container form {
+    padding-top: 70px;
+    max-width: 300px;
+    margin: 0 auto;
+}

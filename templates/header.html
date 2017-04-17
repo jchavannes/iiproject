@@ -1,13 +1,20 @@
 <html>
 <head>
     <title>iiProject</title>
+    <base href="{{ .BaseUrl }}"/>
 
+    <link rel="shortcut icon" href="favicon.png"/>
     <link rel="stylesheet" type="text/css"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="ii.css"/>
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script type="text/javascript" src="ii.js"></script>
+    <script type="text/javascript" src="ii-form.js"></script>
+    <script type="text/javascript">
+        iiApp.BaseUrl.Set("{{ .BaseUrl }}");
+        iiApp.InitCsrf("{{ .CsrfToken }}");
+    </script>
 </head>
 <body>
 

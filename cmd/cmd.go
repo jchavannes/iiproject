@@ -6,14 +6,14 @@ import (
 
 var (
 	iiCmd = &cobra.Command{
-		Use:   "ii",
-		Short: "Run ii",
+		Use:   "iiproject",
+		Short: "Run iiProject application",
 	}
 
 	webCmd = &cobra.Command{
 		Use:   "web",
 		RunE: func (c *cobra.Command, args []string) error {
-			return Web()
+			return runWeb()
 		},
 	}
 )
