@@ -7,23 +7,27 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func Signup(cookieId string, username string, password string) error {
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+func Login(cookieId string, username string, password string) error {
+	user, err := db.GetUserByUsername(username)
 	if err != nil {
 		return err
 	}
-	user, err := db.CreateUser(username, string(hashedPassword))
+
+	err = bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(password))
 	if err != nil {
-		return errors.New(fmt.Sprintf("Error signing up: %s\n", err))
+		return err
 	}
+
 	session, err := db.GetSession(cookieId)
 	if err != nil {
 		return errors.New(fmt.Sprintf("Error getting session: %s\n", err))
 	}
+
 	session.UserId = user.Id
 	err = session.Save()
 	if err != nil {
 		return errors.New(fmt.Sprintf("Error saving session: %s\n", err))
 	}
+
 	return nil
 }

@@ -1,6 +1,6 @@
 # ii Project
 
-Cooperative, decentralized, internet identity communication framework
+Decentralized internet identity communication framework
 
 ### Run
 

@@ -1,24 +1,43 @@
 package db
 
-import (
-	"errors"
-)
-
 type User struct {
 	Id           uint `gorm:"primary_key"`
 	Username     string `gorm:"unique_index"`
 	PasswordHash string
 }
 
-func (u *User) Read() error {
-	if u.Id == 0 && u.Username == "" {
-		return errors.New("Must set either Id or Username.")
+func CreateUser(username string, hashedPassword string) (*User, error) {
+	user := &User{
+		Username: username,
+		PasswordHash: string(hashedPassword),
 	}
-	result := find(u, u)
-	return result.Error
+	result := create(user)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return user, nil
 }
 
-func (u *User) Create() error {
-	result := create(u)
-	return result.Error
+func GetUserByUsername(username string) (*User, error) {
+	user := &User{
+		Username: username,
+	}
+	result := find(user, user)
+	if result.Error != nil {
+		return nil, result.Error
+	} else {
+		return user, nil
+	}
+}
+
+func GetUserById(id uint) (*User, error) {
+	user := &User{
+		Id: id,
+	}
+	result := find(user, user)
+	if result.Error != nil {
+		return nil, result.Error
+	} else {
+		return user, nil
+	}
 }
