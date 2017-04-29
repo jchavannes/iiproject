@@ -9,16 +9,16 @@
 			"revisionTime": "2014-10-17T20:07:13Z"
 		},
 		{
-			"checksumSHA1": "Hl9dNV4DoDiRgXzLIHRmoafkCVo=",
+			"checksumSHA1": "wuVkzoUHX7Pgid5GPXJA3itNqhg=",
 			"path": "github.com/jinzhu/gorm",
-			"revision": "5b509264e18b609330546e6f792a407a98aaf491",
-			"revisionTime": "2017-04-17T02:34:52Z"
+			"revision": "08dba5378e6b29b68e61f70e4d3b1b950d0641e5",
+			"revisionTime": "2017-04-19T02:17:29Z"
 		},
 		{
 			"checksumSHA1": "4VZ1gLZHMumRjV3fclS1aX8S1aQ=",
 			"path": "github.com/jinzhu/gorm/dialects/sqlite",
-			"revision": "5b509264e18b609330546e6f792a407a98aaf491",
-			"revisionTime": "2017-04-17T02:34:52Z"
+			"revision": "08dba5378e6b29b68e61f70e4d3b1b950d0641e5",
+			"revisionTime": "2017-04-19T02:17:29Z"
 		},
 		{
 			"checksumSHA1": "VIp1lZm6joWhlNdwhady8u//qRw=",
@@ -33,28 +33,28 @@
 			"revisionTime": "2017-04-07T15:46:27Z"
 		},
 		{
-			"checksumSHA1": "vFErMUPYP1eea3EyHRmHQkNrbKw=",
+			"checksumSHA1": "XoXykiVo+6kt0mUyDLCu64Z14i4=",
 			"path": "github.com/spf13/cobra",
-			"revision": "5deb57bbca49eb370538fc295ba4b2988f9f5e09",
-			"revisionTime": "2017-04-08T14:45:37Z"
+			"revision": "b6cb3958937245a12d4d7728be080a6c758f4136",
+			"revisionTime": "2017-04-17T17:03:07Z"
 		},
 		{
-			"checksumSHA1": "0Qi2QAv9T10RCUs9vhbIAAnyEZU=",
+			"checksumSHA1": "/iDm+vsu0bUFOgLzkeAXl0cJFXc=",
 			"path": "github.com/spf13/pflag",
-			"revision": "e453343e6260b4a3a89f1f0e10a2fbb07f8d9750",
-			"revisionTime": "2017-04-12T15:22:49Z"
+			"revision": "2300d0f8576fe575f71aaa5b9bbe4e1b0dc2eb51",
+			"revisionTime": "2017-04-18T05:23:14Z"
 		},
 		{
 			"checksumSHA1": "vE43s37+4CJ2CDU6TlOUOYE0K9c=",
 			"path": "golang.org/x/crypto/bcrypt",
-			"revision": "cbc3d0884eac986df6e78a039b8792e869bff863",
-			"revisionTime": "2017-04-09T18:29:52Z"
+			"revision": "12c985af8526c1f6f0c463bbfd9d69623d13b323",
+			"revisionTime": "2017-04-18T16:56:57Z"
 		},
 		{
 			"checksumSHA1": "JsJdKXhz87gWenMwBeejTOeNE7k=",
 			"path": "golang.org/x/crypto/blowfish",
-			"revision": "cbc3d0884eac986df6e78a039b8792e869bff863",
-			"revisionTime": "2017-04-09T18:29:52Z"
+			"revision": "12c985af8526c1f6f0c463bbfd9d69623d13b323",
+			"revisionTime": "2017-04-18T16:56:57Z"
 		},
 		{
 			"checksumSHA1": "Y+HGqEkYM15ir+J93MEaHdyFy0c=",
