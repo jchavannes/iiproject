@@ -35,3 +35,7 @@ footer p {
     max-width: 300px;
     margin: 0 auto;
 }
+#edit-profile textarea {
+    width: 300px;
+    height: 100px;
+}

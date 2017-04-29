@@ -9,6 +9,8 @@ var iiApp;
         InitCsrf: InitCsrf,
         URL: {
             Dashboard: "dashboard",
+            EditProfileSubmit: "edit-profile-submit",
+            ViewIdSubmit: "view-id-submit",
             SignupSubmit: "signup-submit",
             LoginSubmit: "login-submit"
         }

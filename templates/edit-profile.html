@@ -1,0 +1,26 @@
+{{ template "header.html" . }}
+
+<div class="jumbotron">
+    <div class="container login">
+
+        <br/><br/><br/>
+        <h2>Edit Profile</h2>
+    </div>
+    <div class="container">
+        <form id="edit-profile">
+            <label for="input-id">Profile</label>
+            <br/>
+            <textarea id="input-id" name="profile">{{ .Profile }}</textarea>
+            <br/>
+            <input type="submit" value="Save" />
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function() {
+        iiApp.Form.EditProfile($("#edit-profile"));
+    });
+</script>
+
+{{ template "footer.html" . }}

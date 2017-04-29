@@ -1,13 +1,54 @@
-(function() {
+(function () {
     iiApp.Form = {
         /**
-         * @param {jQuery} $ele
+         * @param {jQuery} $form
          */
-        Signup: function ($ele) {
-            $ele.submit(function (e) {
+        EditProfile: function ($form) {
+            $form.submit(function (e) {
                 e.preventDefault();
-                var username = $ele.find("[name=username]").val();
-                var password = $ele.find("[name=password]").val();
+                var profile = $form.find("[name=profile]").val();
+                $.ajax({
+                    type: "POST",
+                    url: iiApp.BaseUrl.Get() + iiApp.URL.EditProfileSubmit,
+                    data: {
+                        profile: profile
+                    },
+                    success: function() {
+                        console.log("Profile Saved");
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                })
+            });
+        },
+        /**
+         * @param {jQuery} $form
+         */
+        ViewId: function ($form) {
+            $form.submit(function (e) {
+                e.preventDefault();
+                var id = $form.find("[name=id]").val();
+                $.ajax({
+                    type: "POST",
+                    url: iiApp.BaseUrl.Get() + iiApp.URL.ViewIdSubmit,
+                    data: {
+                        id: id
+                    },
+                    success: function(data) {
+                        console.log(data);
+                    }
+                })
+            });
+        },
+        /**
+         * @param {jQuery} $form
+         */
+        Signup: function ($form) {
+            $form.submit(function (e) {
+                e.preventDefault();
+                var username = $form.find("[name=username]").val();
+                var password = $form.find("[name=password]").val();
 
                 if (username.length === 0) {
                     alert("Must enter a username.");
@@ -40,13 +81,13 @@
             });
         },
         /**
-         * @param {jQuery} $ele
+         * @param {jQuery} $form
          */
-        Login: function ($ele) {
-            $ele.submit(function (e) {
+        Login: function ($form) {
+            $form.submit(function (e) {
                 e.preventDefault();
-                var username = $ele.find("[name=username]").val();
-                var password = $ele.find("[name=password]").val();
+                var username = $form.find("[name=username]").val();
+                var password = $form.find("[name=password]").val();
 
                 if (username.length === 0) {
                     alert("Must enter a username.");
