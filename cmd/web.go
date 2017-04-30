@@ -5,6 +5,7 @@ import (
 	"github.com/jchavannes/jgo/web"
 	"net/http"
 	"github.com/jchavannes/iiproject/profile"
+	"github.com/jchavannes/iiproject/db"
 )
 
 const (
@@ -162,6 +163,20 @@ var (
 		},
 	}
 
+	userProfileRoute = web.Route{
+		Pattern: "/u/{username}/profile",
+		Handler: func(r *web.Response) {
+			username := r.Request.GetUrlNamedQueryVariable("username")
+			user, _ := db.GetUserByUsername(username)
+			if user == nil {
+				r.SetResponseCode(http.StatusUnprocessableEntity)
+				return
+			}
+			profileString, _ := profile.Get(user.Id)
+			r.Write(profileString)
+		},
+	}
+
 	notFoundHandler = func(r *web.Response) {
 		r.SetResponseCode(http.StatusNotFound)
 		r.RenderTemplate("404")
@@ -206,6 +221,7 @@ func runWeb() error {
 			loginRoute,
 			loginSubmitRoute,
 			logoutRoute,
+			userProfileRoute,
 		},
 		StaticFilesDir: "pub",
 		TemplatesDir: "templates",
