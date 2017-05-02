@@ -39,8 +39,7 @@ var (
 			if auth.IsLoggedIn(r.Session.CookieId) {
 				r.Render()
 			} else {
-				r.SetResponseCode(http.StatusUnauthorized)
-				r.Writer.Header().Set("Location", getUrlWithBaseUrl(URL_INDEX, r))
+				r.SetRedirect(getUrlWithBaseUrl(URL_INDEX, r))
 			}
 		},
 	}

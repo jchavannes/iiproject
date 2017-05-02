@@ -1,0 +1,6 @@
+base: /connect
+requires:
+  - id
+routes:
+  - name: /request
+  - name: /accept-request

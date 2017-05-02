@@ -1,0 +1,7 @@
+base: /profile
+requires:
+  - id
+routes:
+  - name: /
+    response:
+      body: string

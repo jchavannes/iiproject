@@ -1,0 +1,11 @@
+base: /name
+requires:
+  - id
+routes:
+  - name: /
+    response:
+      name: string
+
+  - name: /real
+    response:
+      name: string

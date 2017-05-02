@@ -1,0 +1,7 @@
+base: /message
+requires:
+  - id
+routes:
+  - name: /send
+    input:
+      message: string

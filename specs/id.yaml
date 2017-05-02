@@ -1,0 +1,7 @@
+base: /id
+routes:
+  - name: /
+    unencryptyed: True
+    response:
+      public_key: string
+      algorithm: string

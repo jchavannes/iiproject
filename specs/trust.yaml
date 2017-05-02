@@ -1,0 +1,8 @@
+base: /trust
+routes:
+  - name: /know
+    input:
+      address: string
+      public_key: string
+    response:
+      know: bool
