@@ -3,7 +3,7 @@ package auth
 import (
 	"errors"
 	"fmt"
-	"github.com/jchavannes/iiproject/db"
+	"github.com/jchavannes/iiproject/app/db"
 )
 
 func Logout(cookieId string) error {

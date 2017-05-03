@@ -1,6 +1,6 @@
 package auth
 
-import "github.com/jchavannes/iiproject/db"
+import "github.com/jchavannes/iiproject/app/db"
 
 func IsLoggedIn(cookieId string) bool {
 	session, err := db.GetSession(cookieId)

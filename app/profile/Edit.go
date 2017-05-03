@@ -1,7 +1,7 @@
 package profile
 
 import (
-	"github.com/jchavannes/iiproject/db"
+	"github.com/jchavannes/iiproject/app/db"
 )
 
 func Edit(userId uint, profileString string) error {

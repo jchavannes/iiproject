@@ -3,7 +3,7 @@ package auth
 import (
 	"errors"
 	"fmt"
-	"github.com/jchavannes/iiproject/db"
+	"github.com/jchavannes/iiproject/app/db"
 	"golang.org/x/crypto/bcrypt"
 )
 

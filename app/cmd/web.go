@@ -1,11 +1,11 @@
 package cmd
 
 import (
-	"github.com/jchavannes/iiproject/auth"
+	"github.com/jchavannes/iiproject/app/auth"
 	"github.com/jchavannes/jgo/web"
 	"net/http"
-	"github.com/jchavannes/iiproject/profile"
-	"github.com/jchavannes/iiproject/db"
+	"github.com/jchavannes/iiproject/app/profile"
+	"github.com/jchavannes/iiproject/app/db"
 )
 
 const (

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/jchavannes/iiproject/cmd"
+	"github.com/jchavannes/iiproject/app/cmd"
 	"log"
 )
 
