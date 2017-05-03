@@ -9,5 +9,6 @@ Decentralized internet identity communication framework
 govendor fetch +missing
 
 # Execute
+cd app/
 go run main.go
 ```
