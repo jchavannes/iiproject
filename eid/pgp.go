@@ -134,6 +134,7 @@ func GetPrivateKey() (*packet.PrivateKey, error) {
 	return key, nil
 }
 
+// From https://gist.github.com/eliquious/9e96017f47d9bd43cdf9
 func createEntityFromKeys(pubKey *packet.PublicKey, privKey *packet.PrivateKey) (*openpgp.Entity, error) {
 	config := packet.Config{
 		DefaultHash:            crypto.SHA256,
