@@ -4,6 +4,11 @@ import (
 	"golang.org/x/crypto/openpgp"
 	"golang.org/x/crypto/openpgp/armor"
 	"bytes"
+	"golang.org/x/crypto/openpgp/packet"
+	_ "crypto/sha256"
+	_ "golang.org/x/crypto/ripemd160"
+	"crypto"
+	"errors"
 )
 
 type PGPKeyPair struct {
@@ -47,6 +52,144 @@ func GenerateKeyPair(fullname string, comment string, email string) (PGPKeyPair,
 		PublicKey: pubKey,
 		PrivateKey: privateKey,
 	}, nil
+}
+
+func EncryptAndSign(message []byte) ([]byte, error) {
+
+	pubKey, err := GetPublicKey()
+	if err != nil {
+		return []byte{}, err
+	}
+	privKey, err := GetPrivateKey()
+	if err != nil {
+		return []byte{}, err
+	}
+
+	toEntity, err := createEntityFromKeys(pubKey, privKey)
+	if err != nil {
+		return []byte{}, err
+	}
+
+	buf := new(bytes.Buffer)
+	w, err := openpgp.Encrypt(buf, []*openpgp.Entity{toEntity}, nil, nil, nil)
+	if err != nil {
+		return []byte{}, err
+	}
+	_, err = w.Write([]byte(message))
+	if err != nil {
+		return []byte{}, err
+	}
+	err = w.Close()
+	if err != nil {
+		return []byte{}, err
+	}
+
+	return buf.Bytes(), nil
+}
+
+func GetPublicKey() (*packet.PublicKey, error) {
+	publicKeyReader := bytes.NewReader([]byte(TestPublicKey))
+	block, err := armor.Decode(publicKeyReader)
+	if err != nil {
+		return nil, err
+	}
+
+	if block.Type != openpgp.PublicKeyType {
+		return nil, errors.New("Invalid public key data")
+	}
+
+	packetReader := packet.NewReader(block.Body)
+	pkt, err := packetReader.Next()
+	if err != nil {
+		return nil, err
+	}
+
+	key, ok := pkt.(*packet.PublicKey)
+	if !ok {
+		return nil, err
+	}
+	return key, nil
+}
+
+func GetPrivateKey() (*packet.PrivateKey, error) {
+	privateKeyReader := bytes.NewReader([]byte(TestPrivateKey))
+	block, err := armor.Decode(privateKeyReader)
+	if err != nil {
+		return nil, err
+	}
+
+	if block.Type != openpgp.PrivateKeyType {
+		return nil, errors.New("Invalid private key data")
+	}
+
+	packetReader := packet.NewReader(block.Body)
+	pkt, err := packetReader.Next()
+	if err != nil {
+		return nil, err
+	}
+	key, ok := pkt.(*packet.PrivateKey)
+	if !ok {
+		return nil, errors.New("Unable to cast to Private Key")
+	}
+	return key, nil
+}
+
+func createEntityFromKeys(pubKey *packet.PublicKey, privKey *packet.PrivateKey) (*openpgp.Entity, error) {
+	config := packet.Config{
+		DefaultHash:            crypto.SHA256,
+		DefaultCipher:          packet.CipherAES256,
+		DefaultCompressionAlgo: packet.CompressionZLIB,
+		CompressionConfig: &packet.CompressionConfig{
+			Level: 9,
+		},
+		RSABits: 4096,
+	}
+	currentTime := config.Now()
+	uid := packet.NewUserId("", "", "")
+
+	e := openpgp.Entity{
+		PrimaryKey: pubKey,
+		PrivateKey: privKey,
+		Identities: make(map[string]*openpgp.Identity),
+	}
+	isPrimaryId := false
+
+	e.Identities[uid.Id] = &openpgp.Identity{
+		Name:   uid.Name,
+		UserId: uid,
+		SelfSignature: &packet.Signature{
+			CreationTime: currentTime,
+			SigType:      packet.SigTypePositiveCert,
+			PubKeyAlgo:   packet.PubKeyAlgoRSA,
+			Hash:         config.Hash(),
+			IsPrimaryId:  &isPrimaryId,
+			FlagsValid:   true,
+			FlagSign:     true,
+			FlagCertify:  true,
+			IssuerKeyId:  &e.PrimaryKey.KeyId,
+		},
+	}
+
+	keyLifetimeSecs := uint32(86400 * 365)
+
+	e.Subkeys = make([]openpgp.Subkey, 1)
+	e.Subkeys[0] = openpgp.Subkey{
+		PublicKey: pubKey,
+		PrivateKey: privKey,
+		Sig: &packet.Signature{
+			CreationTime:              currentTime,
+			SigType:                   packet.SigTypeSubkeyBinding,
+			PubKeyAlgo:                packet.PubKeyAlgoRSA,
+			Hash:                      config.Hash(),
+			PreferredHash:             []uint8{8}, // SHA-256
+			FlagsValid:                true,
+			FlagEncryptStorage:        true,
+			FlagEncryptCommunications: true,
+			IssuerKeyId:               &e.PrimaryKey.KeyId,
+			KeyLifetimeSecs:           &keyLifetimeSecs,
+		},
+	}
+	return &e, nil
 }
 
 const TestPrivateKey = `-----BEGIN PGP PRIVATE KEY BLOCK-----

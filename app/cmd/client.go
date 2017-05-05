@@ -8,6 +8,7 @@ import (
 	"log"
 	"encoding/json"
 	"crypto/md5"
+	"github.com/jchavannes/iiproject/eid"
 )
 
 func loadProfile(url string) {
@@ -35,7 +36,11 @@ func getPostData() []byte {
 	message := Message{
 		Message: "test",
 	}
-	msgString, _ := json.Marshal(message)
-	fmt.Printf("%x\n", md5.Sum(msgString))
-	return msgString
+	jsonMessage, _ := json.Marshal(message)
+	fmt.Printf("%x\n", md5.Sum(jsonMessage))
+	encrypted, err := eid.EncryptAndSign(jsonMessage)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return encrypted
 }
