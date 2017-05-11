@@ -13,14 +13,16 @@ var (
 
 	webCmd = &cobra.Command{
 		Use:   "web",
-		RunE: func (c *cobra.Command, args []string) error {
+		Short: "Main browser application and API",
+		RunE: func(c *cobra.Command, args []string) error {
 			return CmdWeb()
 		},
 	}
 
 	profileCmd = &cobra.Command{
 		Use:   "profile",
-		RunE: func (c *cobra.Command, args []string) error {
+		Short: "Implementation of making a profile API call",
+		RunE: func(c *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Must specify an eid.")
 			}
@@ -30,7 +32,8 @@ var (
 
 	idCmd = &cobra.Command{
 		Use:   "id",
-		RunE: func (c *cobra.Command, args []string) error {
+		Short: "Implementation of making an id API call",
+		RunE: func(c *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Must specify an eid.")
 			}
@@ -40,7 +43,8 @@ var (
 
 	generateKeyPairCmd = &cobra.Command{
 		Use:   "generate",
-		RunE: func (c *cobra.Command, args []string) error {
+		Short: "Generate and output PGP key pair",
+		RunE: func(c *cobra.Command, args []string) error {
 			return CmdGenerate()
 		},
 	}
