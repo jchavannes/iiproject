@@ -1,9 +1,15 @@
 package db
 
+import (
+	"time"
+)
+
 type User struct {
 	Id           uint `gorm:"primary_key"`
 	Username     string `gorm:"unique_index"`
 	PasswordHash string
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
 }
 
 func CreateUser(username string, hashedPassword string) (*User, error) {

@@ -1,10 +1,14 @@
 package db
 
+import "time"
+
 type Profile struct {
-	Id      uint `gorm:"primary_key"`
-	User    *User
-	UserId  uint `gorm:"unique_index"`
-	Profile string
+	Id        uint `gorm:"primary_key"`
+	User      *User
+	UserId    uint `gorm:"unique_index"`
+	Profile   string
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 func (p *Profile) Save() error {

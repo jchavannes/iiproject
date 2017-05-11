@@ -1,67 +1,23 @@
 package cmd
 
 import (
-	"net/http"
-	"fmt"
-	"io/ioutil"
 	"bytes"
-	"log"
-	"encoding/json"
-	"github.com/jchavannes/iiproject/eid"
+	"io/ioutil"
+	"net/http"
 )
 
-func loadId(url string) {
-	url = "http://" + url + "/id"
-	postData := getIdPostDate()
+func getHttpResponseBody(url string, postData []byte) ([]byte, error) {
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(postData))
+	if err != nil {
+		return []byte{}, err
+	}
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		log.Fatal(err)
+		return []byte{}, err
 	}
 	defer resp.Body.Close()
-	responseBody, err := ioutil.ReadAll(resp.Body)
-	fmt.Printf("Response body: %s\n", string(responseBody))
-}
-
-func getIdPostDate() []byte {
-	req := eid.IdRequest{
-		Name: "/get",
-	}
-	reqByte, err := json.Marshal(req)
-	if err != nil {
-		return []byte{}
-	}
-	return reqByte
-}
-
-func loadProfile(url string) {
-	url = "http://" + url + "/profile"
-	postData := getPostData()
-	fmt.Printf("Post data: %s\n", string(postData))
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(postData))
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer resp.Body.Close()
-
-	responseBody, err := ioutil.ReadAll(resp.Body)
-	fmt.Printf("Response body: %s\n", string(responseBody))
-}
-
-type Message struct {
-	Message string `json:"message"`
-}
-
-func getPostData() []byte {
-	message := Message{
-		Message: "test",
-	}
-	jsonMessage, _ := json.Marshal(message)
-	return jsonMessage
+	return ioutil.ReadAll(resp.Body)
 }
 
 const CliPrivateKey = `-----BEGIN PGP PRIVATE KEY BLOCK-----

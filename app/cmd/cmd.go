@@ -3,7 +3,6 @@ package cmd
 import (
 	"github.com/spf13/cobra"
 	"errors"
-	"github.com/jchavannes/go-pgp/pgp"
 )
 
 var (
@@ -15,7 +14,7 @@ var (
 	webCmd = &cobra.Command{
 		Use:   "web",
 		RunE: func (c *cobra.Command, args []string) error {
-			return runWeb()
+			return CmdWeb()
 		},
 	}
 
@@ -25,8 +24,7 @@ var (
 			if len(args) < 1 {
 				return errors.New("Must specify an eid.")
 			}
-			loadProfile(args[0])
-			return nil
+			return CmdProfile(args[0])
 		},
 	}
 
@@ -36,21 +34,14 @@ var (
 			if len(args) < 1 {
 				return errors.New("Must specify an eid.")
 			}
-			loadId(args[0])
-			return nil
+			return CmdId(args[0])
 		},
 	}
 
 	generateKeyPairCmd = &cobra.Command{
 		Use:   "generate",
 		RunE: func (c *cobra.Command, args []string) error {
-			keyPair, err := pgp.GenerateKeyPair("Test Key", "test", "test@jasonc.me")
-			if err != nil {
-				return err
-			}
-			println(keyPair.PrivateKey)
-			println(keyPair.PublicKey)
-			return nil
+			return CmdGenerate()
 		},
 	}
 )

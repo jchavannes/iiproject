@@ -279,7 +279,7 @@ var (
 	}
 )
 
-func runWeb() error {
+func CmdWeb() error {
 	server := web.Server{
 		NotFoundHandler: notFoundHandler,
 		Port: 8252,

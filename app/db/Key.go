@@ -1,11 +1,17 @@
 package db
 
+import (
+	"time"
+)
+
 type Key struct {
 	Id         uint `gorm:"primary_key"`
 	User       *User
 	UserId     uint `gorm:"unique_index"`
 	PrivateKey []byte
 	PublicKey  []byte
+	CreatedAt  time.Time
+	UpdatedAt  time.Time
 }
 
 func (k *Key) Save() error {

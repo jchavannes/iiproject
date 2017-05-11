@@ -1,11 +1,15 @@
 package db
 
+import "time"
+
 type Session struct {
 	Id           uint `gorm:"primary_key"`
 	CookieId     string `gorm:"unique_index"`
 	HasLoggedOut bool
 	UserId       uint
 	StartTs      uint
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
 }
 
 func (s *Session) Save() error {
