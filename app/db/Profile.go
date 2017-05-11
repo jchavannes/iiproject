@@ -1,8 +1,9 @@
 package db
 
 type Profile struct {
+	Id      uint `gorm:"primary_key"`
 	User    *User
-	UserId  uint `gorm:"primary_key"`
+	UserId  uint `gorm:"unique_index"`
 	Profile string
 }
 

@@ -6,6 +6,11 @@ import (
 	"net/http"
 	"github.com/jchavannes/iiproject/app/profile"
 	"github.com/jchavannes/iiproject/app/db"
+	"github.com/jchavannes/iiproject/eid"
+	"encoding/json"
+	"github.com/jchavannes/iiproject/app/key"
+	"github.com/jchavannes/go-pgp/pgp"
+	"github.com/jchavannes/iiproject/client"
 )
 
 const (
@@ -172,7 +177,77 @@ var (
 				return
 			}
 			profileString, _ := profile.Get(user.Id)
-			r.Write(profileString)
+
+			body := r.Request.GetBody()
+			var profileRequest eid.ProfileRequest
+			err := json.Unmarshal(body, &profileRequest)
+			if err != nil {
+				r.SetResponseCode(http.StatusBadRequest)
+				return
+			}
+			switch profileRequest.Name {
+			case "/get":
+				userKey, err := key.Get(user.Id)
+				if err != nil {
+					r.SetResponseCode(http.StatusInternalServerError)
+					return
+				}
+				profileGetResponse := eid.ProfileGetResponse{
+					Profile: profileString,
+				}
+				jsonResponse, err := json.Marshal(profileGetResponse)
+				if err != nil {
+					r.SetResponseCode(http.StatusInternalServerError)
+					return
+				}
+				client.GetId(profileRequest.Eid)
+
+				entity, err := pgp.GetEntity(userKey.PublicKey, userKey.PrivateKey)
+				if err != nil {
+					r.SetResponseCode(http.StatusInternalServerError)
+					return
+				}
+
+				encrypted, err := pgp.Encrypt(entity, jsonResponse)
+				if err != nil {
+					r.SetResponseCode(http.StatusInternalServerError)
+					return
+				}
+
+				r.WriteJson(encrypted, false)
+			}
+
+		},
+	}
+
+	userIdRoute = web.Route{
+		Pattern: "/u/{username}/id",
+		Handler: func(r *web.Response) {
+			username := r.Request.GetUrlNamedQueryVariable("username")
+			user, _ := db.GetUserByUsername(username)
+			if user == nil {
+				r.SetResponseCode(http.StatusUnprocessableEntity)
+				return
+			}
+			body := r.Request.GetBody()
+			var idRequest eid.IdRequest
+			err := json.Unmarshal(body, &idRequest)
+			if err != nil {
+				r.SetResponseCode(http.StatusBadRequest)
+				return
+			}
+			switch idRequest.Name {
+			case "/get":
+				userKey, err := key.Get(user.Id)
+				if err != nil {
+					r.SetResponseCode(http.StatusInternalServerError)
+					return
+				}
+				resp := eid.IdGetResponse{
+					PublicKey: string(userKey.PublicKey),
+				}
+				r.WriteJson(resp, false)
+			}
 		},
 	}
 
@@ -221,6 +296,7 @@ func runWeb() error {
 			loginSubmitRoute,
 			logoutRoute,
 			userProfileRoute,
+			userIdRoute,
 		},
 		StaticFilesDir: "pub",
 		TemplatesDir: "templates",

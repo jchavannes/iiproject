@@ -2,6 +2,6 @@ base: /profile
 requires:
   - id
 routes:
-  - name: /
+  - name: /get
     response:
       body: string

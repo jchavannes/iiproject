@@ -2,11 +2,39 @@
 
 - Requests and responses are JSON objects
 - By default, requests and responses are PGP encrypted and signed
-  - Notable exception is _id_, which returns the public key
+  - Notable exception is `/id`, which returns the public key
 
-## Example Request
+## Examples
+
+**Path**: `/id`
+
+### Request
 ```json
 {
-    "date": "2017-05-02T08:40:07.968Z"
+    "name": "/get"
+}
+```
+
+### Response
+```json
+{
+    "public_key": "-----BEGIN PGP PUBLIC KEY BLOCK-----\n\n..."
+}
+```
+
+**Path**: `/profile`
+
+### Request
+```json
+{
+    "name": "/get",
+    "eid": "dev2:8252/u/cli"
+}
+```
+
+### Response
+```json
+{
+    "public_key": "-----BEGIN PGP PUBLIC KEY BLOCK-----\n\n..."
 }
 ```

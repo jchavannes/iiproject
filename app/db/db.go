@@ -11,6 +11,7 @@ var _db *gorm.DB
 
 var (
 	dbInterfaces = []interface{}{
+		Key{},
 		User{},
 		Session{},
 		Profile{},
