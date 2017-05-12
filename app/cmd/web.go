@@ -10,7 +10,7 @@ import (
 	"encoding/json"
 	"github.com/jchavannes/iiproject/app/key"
 	"github.com/jchavannes/go-pgp/pgp"
-	"github.com/jchavannes/iiproject/client"
+	"github.com/jchavannes/iiproject/eid/client"
 )
 
 const (

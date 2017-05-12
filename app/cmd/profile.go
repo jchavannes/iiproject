@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/jchavannes/iiproject/client"
+	"github.com/jchavannes/iiproject/eid/client"
 	"github.com/jchavannes/iiproject/eid/key"
 )
 
