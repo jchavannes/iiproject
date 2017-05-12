@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"github.com/jchavannes/iiproject/app/profile"
 	"github.com/jchavannes/iiproject/app/db"
-	"github.com/jchavannes/iiproject/eid"
+	"github.com/jchavannes/iiproject/eid/api"
 	"encoding/json"
 	"github.com/jchavannes/iiproject/app/key"
 	"github.com/jchavannes/go-pgp/pgp"
@@ -176,10 +176,8 @@ var (
 				r.SetResponseCode(http.StatusUnprocessableEntity)
 				return
 			}
-			profileString, _ := profile.Get(user.Id)
-
 			body := r.Request.GetBody()
-			var profileRequest eid.ProfileRequest
+			var profileRequest api.ProfileRequest
 			err := json.Unmarshal(body, &profileRequest)
 			if err != nil {
 				r.SetResponseCode(http.StatusBadRequest)
@@ -192,8 +190,9 @@ var (
 					r.SetResponseCode(http.StatusInternalServerError)
 					return
 				}
-				profileGetResponse := eid.ProfileGetResponse{
-					Profile: profileString,
+				profileString, _ := profile.Get(user.Id)
+				profileGetResponse := api.ProfileGetResponse{
+					Body: profileString,
 				}
 				jsonResponse, err := json.Marshal(profileGetResponse)
 				if err != nil {
@@ -216,7 +215,6 @@ var (
 
 				r.WriteJson(encrypted, false)
 			}
-
 		},
 	}
 
@@ -230,7 +228,7 @@ var (
 				return
 			}
 			body := r.Request.GetBody()
-			var idRequest eid.IdRequest
+			var idRequest api.IdRequest
 			err := json.Unmarshal(body, &idRequest)
 			if err != nil {
 				r.SetResponseCode(http.StatusBadRequest)
@@ -243,7 +241,7 @@ var (
 					r.SetResponseCode(http.StatusInternalServerError)
 					return
 				}
-				resp := eid.IdGetResponse{
+				resp := api.IdGetResponse{
 					PublicKey: string(userKey.PublicKey),
 				}
 				r.WriteJson(resp, false)

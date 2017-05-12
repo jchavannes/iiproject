@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 	"encoding/json"
-	"github.com/jchavannes/iiproject/eid"
+	"github.com/jchavannes/iiproject/eid/api"
 )
 
 func CmdId(url string) error {
@@ -15,7 +15,7 @@ func CmdId(url string) error {
 }
 
 func getIdPostDate() []byte {
-	req := eid.IdRequest{
+	req := api.IdRequest{
 		Name: "/get",
 	}
 	reqByte, err := json.Marshal(req)

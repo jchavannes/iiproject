@@ -1,4 +1,4 @@
-package eid
+package api
 
 type IdRequest struct {
 	Name string `json:"name"`

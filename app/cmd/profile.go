@@ -2,26 +2,20 @@ package cmd
 
 import (
 	"fmt"
-	"encoding/json"
+	"github.com/jchavannes/iiproject/client"
+	"github.com/jchavannes/iiproject/eid/key"
 )
 
+const CliUser = "cli"
+
 func CmdProfile(url string) error {
-	url = "http://" + url + "/profile"
-	postData := getPostData()
-	fmt.Printf("Post data: %s\n", string(postData))
-	responseBody, err := getHttpResponseBody(url, postData)
-	fmt.Printf("Response body: %s\n", string(responseBody))
-	return err
-}
-
-type Message struct {
-	Message string `json:"message"`
-}
-
-func getPostData() []byte {
-	message := Message{
-		Message: "test",
+	profileResponse, err := client.GetProfile(url, "dev2:8252/u/" + CliUser, key.Pair{
+		PublicKey: []byte(CliPublicKey),
+		PrivateKey: []byte(CliPrivateKey),
+	})
+	if err != nil {
+		return err
 	}
-	jsonMessage, _ := json.Marshal(message)
-	return jsonMessage
+	fmt.Printf("profileResponse.Body: %s\n", profileResponse.Body)
+	return err
 }

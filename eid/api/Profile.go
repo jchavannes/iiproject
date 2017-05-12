@@ -1,4 +1,4 @@
-package eid
+package api
 
 type ProfileRequest struct {
 	Name string `json:"name"`
@@ -6,5 +6,5 @@ type ProfileRequest struct {
 }
 
 type ProfileGetResponse struct {
-	Profile string `json:"profile"`
+	Body string `json:"body"`
 }
