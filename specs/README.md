@@ -35,6 +35,6 @@
 ### Response
 ```json
 {
-    "public_key": "-----BEGIN PGP PUBLIC KEY BLOCK-----\n\n..."
+    "body": "-----Message-----\n\n..."
 }
 ```
