@@ -35,6 +35,6 @@
 ### Response
 ```json
 {
-    "body": "-----Message-----\n\n..."
+    "body": "Profile for CLI..."
 }
 ```

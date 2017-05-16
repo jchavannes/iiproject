@@ -1,7 +1,6 @@
 package client
 
 import (
-	"fmt"
 	"github.com/jchavannes/iiproject/eid/api"
 	"encoding/json"
 	"github.com/jchavannes/iiproject/eid/key"
@@ -18,7 +17,6 @@ func GetProfile(eidUrl string, clientEid string, clientKey key.Pair) (*api.Profi
 	if err != nil {
 		return nil, err
 	}
-	fmt.Printf("Response body: %s\n", string(responseBody))
 
 	pgpEntity, err := clientKey.GetPgpEntity()
 	if err != nil {
@@ -29,14 +27,13 @@ func GetProfile(eidUrl string, clientEid string, clientKey key.Pair) (*api.Profi
 	if err != nil {
 		return nil, err
 	}
-	fmt.Printf("decrypted: %s\n", string(decrypted))
 
 	// Parse Message
-	var profileGetResponse *api.ProfileGetResponse
-	err = json.Unmarshal(decrypted, profileGetResponse)
+	var profileGetResponse api.ProfileGetResponse
+	err = json.Unmarshal(decrypted, &profileGetResponse)
 	if err != nil {
 		return nil, err
 	}
 
-	return profileGetResponse, nil
+	return &profileGetResponse, nil
 }

@@ -13,11 +13,11 @@ func GetId(eidUrl string) (*api.IdGetResponse, error) {
 	})
 
 	// Parse Message
-	var idGetResponse *api.IdGetResponse
-	err = json.Unmarshal(responseBody, idGetResponse)
+	var idGetResponse api.IdGetResponse
+	err = json.Unmarshal(responseBody, &idGetResponse)
 	if err!= nil {
 		return nil, err
 	}
 
-	return idGetResponse, nil
+	return &idGetResponse, nil
 }

@@ -114,8 +114,7 @@ var (
 
 			err := auth.Signup(r.Session.CookieId, username, password)
 			if err != nil {
-				r.SetResponseCode(http.StatusUnauthorized)
-				r.Write(err.Error())
+				r.Error(err, http.StatusUnauthorized)
 			}
 		},
 	}
@@ -146,8 +145,7 @@ var (
 
 			err := auth.Login(r.Session.CookieId, username, password)
 			if err != nil {
-				r.SetResponseCode(http.StatusUnauthorized)
-				r.Write(err.Error())
+				r.Error(err, http.StatusUnauthorized)
 			}
 		},
 	}
@@ -158,8 +156,7 @@ var (
 			if auth.IsLoggedIn(r.Session.CookieId) {
 				err := auth.Logout(r.Session.CookieId)
 				if err != nil {
-					r.SetResponseCode(http.StatusInternalServerError)
-					r.Write(err.Error())
+					r.Error(err, http.StatusInternalServerError)
 					return
 				}
 			}
@@ -180,14 +177,13 @@ var (
 			var profileRequest api.ProfileRequest
 			err := json.Unmarshal(body, &profileRequest)
 			if err != nil {
-				r.SetResponseCode(http.StatusBadRequest)
+				r.Error(err, http.StatusBadRequest)
 				return
 			}
 			switch profileRequest.Name {
 			case "/get":
-				userKey, err := key.Get(user.Id)
 				if err != nil {
-					r.SetResponseCode(http.StatusInternalServerError)
+					r.Error(err, http.StatusInternalServerError)
 					return
 				}
 				profileString, _ := profile.Get(user.Id)
@@ -196,24 +192,28 @@ var (
 				}
 				jsonResponse, err := json.Marshal(profileGetResponse)
 				if err != nil {
-					r.SetResponseCode(http.StatusInternalServerError)
+					r.Error(err, http.StatusInternalServerError)
 					return
 				}
-				client.GetId(profileRequest.Eid)
-
-				entity, err := pgp.GetEntity(userKey.PublicKey, userKey.PrivateKey)
+				idGetResponse, err := client.GetId(profileRequest.Eid)
 				if err != nil {
-					r.SetResponseCode(http.StatusInternalServerError)
+					r.Error(err, http.StatusInternalServerError)
+					return
+				}
+
+				entity, err := pgp.GetEntity([]byte(idGetResponse.PublicKey), nil)
+				if err != nil {
+					r.Error(err, http.StatusInternalServerError)
 					return
 				}
 
 				encrypted, err := pgp.Encrypt(entity, jsonResponse)
 				if err != nil {
-					r.SetResponseCode(http.StatusInternalServerError)
+					r.Error(err, http.StatusInternalServerError)
 					return
 				}
 
-				r.WriteJson(encrypted, false)
+				r.Write(string(encrypted))
 			}
 		},
 	}
@@ -231,14 +231,14 @@ var (
 			var idRequest api.IdRequest
 			err := json.Unmarshal(body, &idRequest)
 			if err != nil {
-				r.SetResponseCode(http.StatusBadRequest)
+				r.Error(err, http.StatusBadRequest)
 				return
 			}
 			switch idRequest.Name {
 			case "/get":
 				userKey, err := key.Get(user.Id)
 				if err != nil {
-					r.SetResponseCode(http.StatusInternalServerError)
+					r.Error(err, http.StatusInternalServerError)
 					return
 				}
 				resp := api.IdGetResponse{
