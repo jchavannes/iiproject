@@ -16,13 +16,21 @@ func (p *Profile) Save() error {
 	return result.Error
 }
 
-func GetProfileByUserId(userId uint) (string, error) {
+func GetProfileStringByUserId(userId uint) (string, error) {
+	profile, err := GetProfileByUserId(userId)
+	if err != nil {
+		return "", err
+	}
+	return profile.Profile, nil
+}
+
+func GetProfileByUserId(userId uint) (*Profile, error) {
 	profile := &Profile{
 		UserId: userId,
 	}
 	err := find(profile, profile)
 	if err.Error != nil {
-		return "", err.Error
+		return nil, err.Error
 	}
-	return profile.Profile, nil
+	return profile, nil
 }

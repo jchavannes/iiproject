@@ -5,15 +5,13 @@ import (
 )
 
 func Edit(userId uint, profileString string) error {
-	user, err := db.GetUserById(userId)
+	profile, err := db.GetProfileByUserId(userId)
 	if err != nil {
-		return err
+		profile = &db.Profile{
+			UserId: userId,
+		}
 	}
-	profile := db.Profile{
-		UserId: userId,
-		User: user,
-		Profile: profileString,
-	}
+	profile.Profile = profileString
 	err = profile.Save()
 	return err
 }

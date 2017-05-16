@@ -75,7 +75,7 @@ var (
 			profileString := r.Request.GetFormValue("profile")
 			err := profile.Edit(user.Id, profileString)
 			if err != nil {
-				r.SetResponseCode(http.StatusInternalServerError)
+				r.Error(err, http.StatusInternalServerError)
 			}
 		},
 	}
@@ -182,10 +182,6 @@ var (
 			}
 			switch profileRequest.Name {
 			case "/get":
-				if err != nil {
-					r.Error(err, http.StatusInternalServerError)
-					return
-				}
 				profileString, _ := profile.Get(user.Id)
 				profileGetResponse := api.ProfileGetResponse{
 					Body: profileString,
