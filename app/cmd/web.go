@@ -173,6 +173,7 @@ var (
 				r.SetResponseCode(http.StatusUnprocessableEntity)
 				return
 			}
+
 			body := r.Request.GetBody()
 			var profileRequest api.ProfileRequest
 			err := json.Unmarshal(body, &profileRequest)
@@ -180,30 +181,52 @@ var (
 				r.Error(err, http.StatusBadRequest)
 				return
 			}
+
 			switch profileRequest.Name {
 			case "/get":
+				userKey, err := key.Get(user.Id)
+				if err != nil {
+					r.Error(err, http.StatusInternalServerError)
+					return
+				}
+
 				profileString, _ := profile.Get(user.Id)
 				profileGetResponse := api.ProfileGetResponse{
 					Body: profileString,
 				}
+
 				jsonResponse, err := json.Marshal(profileGetResponse)
 				if err != nil {
 					r.Error(err, http.StatusInternalServerError)
 					return
 				}
+
+				privEntity, err := pgp.GetEntity(userKey.PublicKey, userKey.PrivateKey)
+				if err != nil {
+					r.Error(err, http.StatusInternalServerError)
+					return
+				}
+
+				signature, err := pgp.Sign(privEntity, jsonResponse)
+				if err != nil {
+					r.Error(err, http.StatusInternalServerError)
+					return
+				}
+
 				idGetResponse, err := client.GetId(profileRequest.Eid)
 				if err != nil {
 					r.Error(err, http.StatusInternalServerError)
 					return
 				}
 
-				entity, err := pgp.GetEntity([]byte(idGetResponse.PublicKey), nil)
+				pubEntity, err := pgp.GetEntity([]byte(idGetResponse.PublicKey), nil)
 				if err != nil {
 					r.Error(err, http.StatusInternalServerError)
 					return
 				}
 
-				encrypted, err := pgp.Encrypt(entity, jsonResponse)
+				message := append(jsonResponse, signature...)
+				encrypted, err := pgp.Encrypt(pubEntity, message)
 				if err != nil {
 					r.Error(err, http.StatusInternalServerError)
 					return

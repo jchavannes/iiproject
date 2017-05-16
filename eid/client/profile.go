@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"github.com/jchavannes/iiproject/eid/key"
 	"github.com/jchavannes/go-pgp/pgp"
+	"regexp"
 )
 
 func GetProfile(eidUrl string, clientEid string, clientKey key.Pair) (*api.ProfileGetResponse, error) {
@@ -28,9 +29,27 @@ func GetProfile(eidUrl string, clientEid string, clientKey key.Pair) (*api.Profi
 		return nil, err
 	}
 
-	// Parse Message
+	reg := regexp.MustCompile(`-----BEGIN PGP SIGNATURE-----[A-Za-z0-9/=+\s]+-----END PGP SIGNATURE-----$`)
+	signature := reg.FindString(string(decrypted))
+	jsonString := reg.ReplaceAllString(string(decrypted), "")
+
+	idGetResponse, err := GetId(eidUrl)
+	if err != nil {
+		return nil, err
+	}
+
+	publicKeyPacket, err := pgp.GetPublicKeyPacket([]byte(idGetResponse.PublicKey))
+	if err != nil {
+		return nil, err
+	}
+
+	err = pgp.Verify(publicKeyPacket, []byte(jsonString), []byte(signature))
+	if err != nil {
+		return nil, err
+	}
+
 	var profileGetResponse api.ProfileGetResponse
-	err = json.Unmarshal(decrypted, &profileGetResponse)
+	err = json.Unmarshal([]byte(jsonString), &profileGetResponse)
 	if err != nil {
 		return nil, err
 	}
