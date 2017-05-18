@@ -20,11 +20,12 @@
             <input type="submit" value="View" />
         </form>
     </div>
+    <div id="profile-area" class="container"></div>
 </div>
 
 <script type="text/javascript">
     $(function() {
-        iiApp.Form.ViewId($("#view-id"));
+        iiApp.Form.ViewId($("#view-id"), $("#profile-area"));
     });
 </script>
 

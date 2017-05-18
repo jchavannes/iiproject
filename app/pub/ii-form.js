@@ -24,8 +24,9 @@
         },
         /**
          * @param {jQuery} $form
+         * @param {jQuery} $profileArea
          */
-        ViewId: function ($form) {
+        ViewId: function ($form, $profileArea) {
             $form.submit(function (e) {
                 e.preventDefault();
                 var id = $form.find("[name=id]").val();
@@ -36,7 +37,7 @@
                         id: id
                     },
                     success: function(data) {
-                        console.log(data);
+                        $profileArea.html(data);
                     }
                 })
             });

@@ -38,12 +38,12 @@ func GetProfile(eidUrl string, clientEid string, clientKey key.Pair) (*api.Profi
 		return nil, err
 	}
 
-	publicKeyPacket, err := pgp.GetPublicKeyPacket([]byte(idGetResponse.PublicKey))
+	publicKeyEntity, err := pgp.GetEntity([]byte(idGetResponse.PublicKey), []byte{})
 	if err != nil {
 		return nil, err
 	}
 
-	err = pgp.Verify(publicKeyPacket, []byte(jsonString), []byte(signature))
+	err = pgp.Verify(publicKeyEntity, []byte(jsonString), []byte(signature))
 	if err != nil {
 		return nil, err
 	}
