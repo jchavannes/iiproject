@@ -1,7 +1,7 @@
 package web
 
 import (
-	"github.com/jchavannes/iiproject/app/db/user"
+	"github.com/jchavannes/iiproject/app/db/auth"
 	"github.com/jchavannes/jgo/web"
 	"net/http"
 )
@@ -28,8 +28,8 @@ var (
 	preHandler = func(r *web.Response) {
 		baseUrl := getBaseUrl(r)
 		r.Helper["BaseUrl"] = baseUrl
-		if user.IsLoggedIn(r.Session.CookieId) {
-			r.Helper["Username"] = user.GetSessionUser(r.Session.CookieId).Username
+		if auth.IsLoggedIn(r.Session.CookieId) {
+			r.Helper["Username"] = auth.GetSessionUser(r.Session.CookieId).Username
 		}
 	}
 

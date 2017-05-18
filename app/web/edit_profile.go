@@ -2,7 +2,7 @@ package web
 
 import (
 	"github.com/jchavannes/jgo/web"
-	"github.com/jchavannes/iiproject/app/db/user"
+	"github.com/jchavannes/iiproject/app/db/auth"
 	"github.com/jchavannes/iiproject/app/db/profile"
 	"net/http"
 )
@@ -10,7 +10,7 @@ import (
 var editProfileRoute = web.Route{
 	Pattern: URL_EDIT_PROFILE,
 	Handler: func(r *web.Response) {
-		user := user.GetSessionUser(r.Session.CookieId)
+		user := auth.GetSessionUser(r.Session.CookieId)
 		if user == nil {
 			r.SetResponseCode(http.StatusUnauthorized)
 			return
@@ -25,7 +25,7 @@ var editProfileSubmitRoute = web.Route{
 	Pattern: URL_EDIT_PROFILE_SUBMIT,
 	CsrfProtect: true,
 	Handler: func(r *web.Response) {
-		user := user.GetSessionUser(r.Session.CookieId)
+		user := auth.GetSessionUser(r.Session.CookieId)
 		if user == nil {
 			r.SetResponseCode(http.StatusUnauthorized)
 			return
