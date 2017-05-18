@@ -1,15 +1,13 @@
 package web
 
 import (
-	"encoding/json"
 	"github.com/jchavannes/iiproject/app/db"
 	"github.com/jchavannes/iiproject/app/db/key"
 	"github.com/jchavannes/iiproject/app/db/profile"
-	"github.com/jchavannes/iiproject/eid/api"
-	"github.com/jchavannes/go-pgp/pgp"
-	"github.com/jchavannes/iiproject/eid/client"
+	"github.com/jchavannes/iiproject/eid/server"
 	"github.com/jchavannes/jgo/web"
 	"net/http"
+	"strings"
 )
 
 var userProfileRoute = web.Route{
@@ -22,65 +20,28 @@ var userProfileRoute = web.Route{
 			return
 		}
 
-		body := r.Request.GetBody()
-		var profileRequest api.ProfileRequest
-		err := json.Unmarshal(body, &profileRequest)
+		userKey, err := key.Get(user.Id)
+		if err != nil {
+			r.Error(err, http.StatusInternalServerError)
+			return
+		}
+
+		profileString, err := profile.Get(user.Id)
+		if err != nil {
+			r.Error(err, http.StatusInternalServerError)
+		}
+
+		profileResponse, err := server.ProcessProfileRequest(
+			r.Request.GetBody(),
+			userKey.PublicKey,
+			userKey.PrivateKey,
+			strings.NewReader(profileString),
+		)
+
 		if err != nil {
 			r.Error(err, http.StatusBadRequest)
 			return
 		}
-
-		switch profileRequest.Name {
-		case "/get":
-			userKey, err := key.Get(user.Id)
-			if err != nil {
-				r.Error(err, http.StatusInternalServerError)
-				return
-			}
-
-			profileString, _ := profile.Get(user.Id)
-			profileGetResponse := api.ProfileGetResponse{
-				Body: profileString,
-			}
-
-			jsonResponse, err := json.Marshal(profileGetResponse)
-			if err != nil {
-				r.Error(err, http.StatusInternalServerError)
-				return
-			}
-
-			privEntity, err := pgp.GetEntity(userKey.PublicKey, userKey.PrivateKey)
-			if err != nil {
-				r.Error(err, http.StatusInternalServerError)
-				return
-			}
-
-			signature, err := pgp.Sign(privEntity, jsonResponse)
-			if err != nil {
-				r.Error(err, http.StatusInternalServerError)
-				return
-			}
-
-			idGetResponse, err := client.GetId(profileRequest.Eid)
-			if err != nil {
-				r.Error(err, http.StatusInternalServerError)
-				return
-			}
-
-			pubEntity, err := pgp.GetEntity([]byte(idGetResponse.PublicKey), nil)
-			if err != nil {
-				r.Error(err, http.StatusInternalServerError)
-				return
-			}
-
-			message := append(jsonResponse, signature...)
-			encrypted, err := pgp.Encrypt(pubEntity, message)
-			if err != nil {
-				r.Error(err, http.StatusInternalServerError)
-				return
-			}
-
-			r.Write(string(encrypted))
-		}
+		r.Write(string(profileResponse))
 	},
 }

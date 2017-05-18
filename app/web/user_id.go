@@ -3,9 +3,8 @@ package web
 import (
 	"github.com/jchavannes/iiproject/app/db"
 	"github.com/jchavannes/iiproject/app/db/key"
-	"github.com/jchavannes/iiproject/eid/api"
+	"github.com/jchavannes/iiproject/eid/server"
 	"github.com/jchavannes/jgo/web"
-	"encoding/json"
 	"net/http"
 )
 
@@ -18,24 +17,16 @@ var userIdRoute = web.Route{
 			r.SetResponseCode(http.StatusUnprocessableEntity)
 			return
 		}
-		body := r.Request.GetBody()
-		var idRequest api.IdRequest
-		err := json.Unmarshal(body, &idRequest)
+		userKey, err := key.Get(user.Id)
+		if err != nil {
+			r.Error(err, http.StatusInternalServerError)
+			return
+		}
+		idResponse, err := server.ProcessIdRequest(r.Request.GetBody(), userKey.PublicKey)
 		if err != nil {
 			r.Error(err, http.StatusBadRequest)
 			return
 		}
-		switch idRequest.Name {
-		case "/get":
-			userKey, err := key.Get(user.Id)
-			if err != nil {
-				r.Error(err, http.StatusInternalServerError)
-				return
-			}
-			resp := api.IdGetResponse{
-				PublicKey: string(userKey.PublicKey),
-			}
-			r.WriteJson(resp, false)
-		}
+		r.WriteJson(idResponse, false)
 	},
 }
