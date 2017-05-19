@@ -29,7 +29,12 @@ var (
 		baseUrl := getBaseUrl(r)
 		r.Helper["BaseUrl"] = baseUrl
 		if auth.IsLoggedIn(r.Session.CookieId) {
-			r.Helper["Username"] = auth.GetSessionUser(r.Session.CookieId).Username
+			user, err := auth.GetSessionUser(r.Session.CookieId)
+			if err != nil {
+				r.Error(err, http.StatusUnprocessableEntity)
+				return
+			}
+			r.Helper["Username"] = user.Username
 		}
 	}
 

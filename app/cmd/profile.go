@@ -16,6 +16,6 @@ func CmdProfile(url string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("profileResponse.Body: %s\n", profileResponse.Body)
+	fmt.Printf("profileResponse: %#v\n", profileResponse)
 	return err
 }

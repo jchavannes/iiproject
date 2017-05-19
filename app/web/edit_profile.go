@@ -10,9 +10,9 @@ import (
 var editProfileRoute = web.Route{
 	Pattern: URL_EDIT_PROFILE,
 	Handler: func(r *web.Response) {
-		user := auth.GetSessionUser(r.Session.CookieId)
-		if user == nil {
-			r.SetResponseCode(http.StatusUnauthorized)
+		user, err := auth.GetSessionUser(r.Session.CookieId)
+		if err != nil {
+			r.Error(err, http.StatusUnauthorized)
 			return
 		}
 		profileString, _ := profile.Get(user.Id)
@@ -25,13 +25,13 @@ var editProfileSubmitRoute = web.Route{
 	Pattern: URL_EDIT_PROFILE_SUBMIT,
 	CsrfProtect: true,
 	Handler: func(r *web.Response) {
-		user := auth.GetSessionUser(r.Session.CookieId)
-		if user == nil {
-			r.SetResponseCode(http.StatusUnauthorized)
+		user, err := auth.GetSessionUser(r.Session.CookieId)
+		if err != nil {
+			r.Error(err, http.StatusUnauthorized)
 			return
 		}
 		profileString := r.Request.GetFormValue("profile")
-		err := profile.Edit(user.Id, profileString)
+		err = profile.Edit(user.Id, profileString)
 		if err != nil {
 			r.Error(err, http.StatusInternalServerError)
 		}

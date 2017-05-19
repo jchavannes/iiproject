@@ -13,14 +13,14 @@ func IsLoggedIn(cookieId string) bool {
 	return false
 }
 
-func GetSessionUser(cookieId string) *db.User {
+func GetSessionUser(cookieId string) (*db.User, error) {
 	session, err := db.GetSession(cookieId)
 	if err != nil || session.UserId == 0 || session.HasLoggedOut {
-		return nil
+		return nil, err
 	}
 	user, err := db.GetUserById(session.UserId)
 	if err != nil {
-		return nil
+		return nil, err
 	}
-	return user
+	return user, nil
 }
