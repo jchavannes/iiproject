@@ -2,25 +2,66 @@
 
 <div class="jumbotron">
     <div class="container login">
-
         <br/><br/><br/>
         <h2>Dashboard</h2>
     </div>
     <div class="container">
-        <p>
-            <a href="edit-profile">Edit profile</a>
-        </p>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Actions</div>
+                    <div class="panel-body">
+                        <p>
+                            <a class="btn btn-default" href="edit-profile">Edit profile</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Contacts</div>
+                    <div class="panel-body">
+                        <form id="add-contact">
+                            <div class="row">
+                                <div class="col-md-2 nopadding">
+                                    <label for="input-id">eId</label>
+                                </div>
+                                <div class="col-md-6 nopadding">
+                                    <input id="input-id" class="form-control" type="text" name="id" />
+                                </div>
+                                <div class="col-md-4 nopadding">
+                                    <input class="btn btn-primary" type="submit" value="Add Contact" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 nopadding">
+                <div class="panel panel-default">
+                    <div class="panel-heading">View Profile</div>
+                    <div class="panel-body">
+                        <form id="view-id">
+                            <div class="row">
+                                <div class="col-md-2 nopadding">
+                                    <label for="input-id">eId</label>
+                                </div>
+                                <div class="col-md-6 nopadding">
+                                    <input id="input-id" class="form-control" type="text" name="id" />
+                                </div>
+                                <div class="col-md-4 nopadding">
+                                    <input class="btn btn-primary" type="submit" value="View" />
+                                </div>
+                            </div>
+                        </form>
+                        <div id="profile-area" class="container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+            </div>
+        </div>
     </div>
-    <div class="container">
-        <h4>View Id</h4>
-        <form id="view-id">
-            <label for="input-id">eId</label>
-            <br/>
-            <input id="input-id" type="text" name="id" />
-            <input type="submit" value="View" />
-        </form>
-    </div>
-    <div id="profile-area" class="container"></div>
 </div>
 
 <script type="text/javascript">
