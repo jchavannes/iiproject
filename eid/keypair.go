@@ -1,15 +1,15 @@
-package key
+package eid
 
 import (
 	"golang.org/x/crypto/openpgp"
 	"github.com/jchavannes/go-pgp/pgp"
 )
 
-type Pair struct {
+type KeyPair struct {
 	PublicKey  []byte
 	PrivateKey []byte
 }
 
-func (p Pair) GetPgpEntity() (*openpgp.Entity, error) {
+func (p KeyPair) GetPgpEntity() (*openpgp.Entity, error) {
 	return pgp.GetEntity(p.PublicKey, p.PrivateKey)
 }

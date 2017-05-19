@@ -3,12 +3,12 @@ package client
 import (
 	"github.com/jchavannes/iiproject/eid/api"
 	"encoding/json"
-	"github.com/jchavannes/iiproject/eid/key"
 	"github.com/jchavannes/go-pgp/pgp"
 	"regexp"
+	"github.com/jchavannes/iiproject/eid"
 )
 
-func GetProfile(eidUrl string, clientEid string, clientKey key.Pair) (*api.ProfileGetResponse, error) {
+func GetProfile(eidUrl string, clientEid string, clientKey eid.KeyPair) (*api.ProfileGetResponse, error) {
 	// Execute http request and get response
 	url := "http://" + eidUrl + "/profile"
 	responseBody, err := getResponse(url, api.ProfileRequest{
