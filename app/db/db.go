@@ -15,6 +15,8 @@ var (
 		User{},
 		Session{},
 		Profile{},
+		Contact{},
+		UserContact{},
 	}
 )
 
@@ -48,6 +50,16 @@ func create(value interface{}) *gorm.DB {
 func find(out interface{}, where ...interface{}) *gorm.DB {
 	db, _ := getDb()
 	result := db.Find(out, where...)
+	if result.Error != nil && !result.RecordNotFound() {
+		fmt.Printf("Db error: %s\n", result.Error)
+		return result
+	}
+	return result
+}
+
+func findString(out interface{}, where string, args ...string) *gorm.DB {
+	db, _ := getDb()
+	result := db.Where(where, args).Find(out)
 	if result.Error != nil && !result.RecordNotFound() {
 		fmt.Printf("Db error: %s\n", result.Error)
 		return result

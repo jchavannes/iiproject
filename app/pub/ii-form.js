@@ -1,9 +1,11 @@
 (function () {
+    var profileSavedTimeout;
     iiApp.Form = {
         /**
          * @param {jQuery} $form
+         * @param {jQuery} $profileSaved
          */
-        EditProfile: function ($form) {
+        EditProfile: function ($form, $profileSaved) {
             $form.submit(function (e) {
                 e.preventDefault();
                 var profile = $form.find("[name=profile]").val();
@@ -14,10 +16,34 @@
                         profile: profile
                     },
                     success: function() {
-                        console.log("Profile Saved");
+                        $profileSaved.show();
+                        clearTimeout(profileSavedTimeout);
+                        profileSavedTimeout = setTimeout(function() {
+                            $profileSaved.hide();
+                        }, 1500);
                     },
                     error: function (err) {
                         console.log(err);
+                    }
+                })
+            });
+        },
+        /**
+         * @param {jQuery} $contactForm
+         * @param {jQuery} $contactList
+         */
+        AddContact: function ($contactForm, $contactList) {
+            $contactForm.submit(function (e) {
+                e.preventDefault();
+                var id = $contactForm.find("[name=id]").val();
+                $.ajax({
+                    type: "POST",
+                    url: iiApp.BaseUrl.Get() + iiApp.URL.ContactAddSubmit,
+                    data: {
+                        id: id
+                    },
+                    success: function() {
+                        iiApp.Section.ContactList($contactList);
                     }
                 })
             });

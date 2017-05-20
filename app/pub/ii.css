@@ -39,3 +39,10 @@ footer p {
     width: 300px;
     height: 100px;
 }
+#profile-saved {
+    display: none;
+    font-style: italic;
+}
+#contact-list h3 {
+    margin-top: 0;
+}

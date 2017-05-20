@@ -10,6 +10,8 @@ var iiApp;
         URL: {
             Dashboard: "dashboard",
             EditProfileSubmit: "edit-profile-submit",
+            ContactAddSubmit: "contact-add-submit",
+            ContactList: "contact-list",
             ViewIdSubmit: "view-id-submit",
             SignupSubmit: "signup-submit",
             LoginSubmit: "login-submit"
@@ -55,3 +57,11 @@ var iiApp;
         });
     }
 })();
+
+/**
+ * @typedef {{
+ *   Id: int
+ *   Eid: string
+ *   PublicKey: string
+ * }} Contact
+ */

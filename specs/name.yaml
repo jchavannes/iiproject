@@ -2,7 +2,7 @@ base: /name
 requires:
   - id
 routes:
-  - name: /
+  - name: /get
     response:
       name: string
 

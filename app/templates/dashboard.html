@@ -21,13 +21,17 @@
                     <div class="panel-body">
                         <form id="add-contact">
                             <div class="row">
-                                <div class="col-md-2 nopadding">
+                                <div id="contact-list" class="col-sm-12">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
                                     <label for="input-id">eId</label>
                                 </div>
-                                <div class="col-md-6 nopadding">
+                                <div class="col-md-6">
                                     <input id="input-id" class="form-control" type="text" name="id" />
                                 </div>
-                                <div class="col-md-4 nopadding">
+                                <div class="col-md-4">
                                     <input class="btn btn-primary" type="submit" value="Add Contact" />
                                 </div>
                             </div>
@@ -35,23 +39,24 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 nopadding">
+            <div class="col-md-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">View Profile</div>
                     <div class="panel-body">
                         <form id="view-id">
                             <div class="row">
-                                <div class="col-md-2 nopadding">
+                                <div class="col-md-2">
                                     <label for="input-id">eId</label>
                                 </div>
-                                <div class="col-md-6 nopadding">
+                                <div class="col-md-6">
                                     <input id="input-id" class="form-control" type="text" name="id" />
                                 </div>
-                                <div class="col-md-4 nopadding">
+                                <div class="col-md-4">
                                     <input class="btn btn-primary" type="submit" value="View" />
                                 </div>
                             </div>
                         </form>
+                        <hr/>
                         <div id="profile-area" class="container"></div>
                     </div>
                 </div>
@@ -67,6 +72,8 @@
 <script type="text/javascript">
     $(function() {
         iiApp.Form.ViewId($("#view-id"), $("#profile-area"));
+        iiApp.Form.AddContact($("#add-contact"), $("#contact-list"));
+        iiApp.Section.ContactList($("#contact-list"));
     });
 </script>
 
