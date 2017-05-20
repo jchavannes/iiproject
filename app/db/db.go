@@ -57,9 +57,9 @@ func find(out interface{}, where ...interface{}) *gorm.DB {
 	return result
 }
 
-func findString(out interface{}, where string, args ...string) *gorm.DB {
+func findString(out interface{}, where string, args ...interface{}) *gorm.DB {
 	db, _ := getDb()
-	result := db.Where(where, args).Find(out)
+	result := db.Where(where, args...).Find(out)
 	if result.Error != nil && !result.RecordNotFound() {
 		fmt.Printf("Db error: %s\n", result.Error)
 		return result

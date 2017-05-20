@@ -13,9 +13,17 @@ var (
 
 	webCmd = &cobra.Command{
 		Use:   "web",
-		Short: "Main browser application and API",
+		Short: "Main browser application",
 		RunE: func(c *cobra.Command, args []string) error {
 			return CmdWeb()
+		},
+	}
+
+	apiCmd = &cobra.Command{
+		Use:   "api",
+		Short: "eId API",
+		RunE: func(c *cobra.Command, args []string) error {
+			return CmdApi()
 		},
 	}
 
@@ -52,6 +60,7 @@ var (
 
 func Run() error {
 	iiCmd.AddCommand(webCmd)
+	iiCmd.AddCommand(apiCmd)
 	iiCmd.AddCommand(profileCmd)
 	iiCmd.AddCommand(idCmd)
 	iiCmd.AddCommand(generateKeyPairCmd)

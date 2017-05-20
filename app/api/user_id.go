@@ -1,4 +1,4 @@
-package web
+package api
 
 import (
 	"github.com/jchavannes/iiproject/app/db"
@@ -9,7 +9,7 @@ import (
 )
 
 var userIdRoute = web.Route{
-	Pattern: "/u/{username}/id",
+	Pattern: PATTERN_USER_ID,
 	Handler: func(r *web.Response) {
 		username := r.Request.GetUrlNamedQueryVariable("username")
 		user, _ := db.GetUserByUsername(username)

@@ -3,6 +3,7 @@ package db
 import (
 	"time"
 	"strings"
+	"fmt"
 )
 
 type Contact struct {
@@ -38,13 +39,17 @@ func GetContact(eid string) (*Contact, error) {
 
 func GetContacts(contactIds []string) ([]*Contact, error) {
 	var whereIn []string
-	for range contactIds {
+
+	contactIdsInterface := make([]interface{}, len(contactIds))
+	for i, contactId := range contactIds {
 		whereIn = append(whereIn, "?")
+		contactIdsInterface[i] = contactId
 	}
 	where := "id IN (" + strings.Join(whereIn, ", ") + ")"
 	var contacts []*Contact
-	result := findString(&contacts, where, contactIds...)
+	result := findString(&contacts, where, contactIdsInterface...)
 	if result.Error != nil {
+		fmt.Printf(" contacts: %#v\n where: %#v\n contactIds: %#v\n", contacts, where, contactIds)
 		return nil, result.Error
 	}
 	return contacts, nil

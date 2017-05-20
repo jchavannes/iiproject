@@ -6,8 +6,8 @@ import (
 
 type UserContact struct {
 	Id        uint `gorm:"primary_key"`
-	UserId    uint
-	ContactId uint
+	UserId    uint `gorm:"unique_index:user_contact"`
+	ContactId uint `gorm:"unique_index:user_contact"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

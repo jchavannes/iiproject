@@ -71,8 +71,6 @@ func Run() error {
 			loginRoute,
 			loginSubmitRoute,
 			logoutRoute,
-			userProfileRoute,
-			userIdRoute,
 			contactAddSubmit,
 			contactList,
 		},
