@@ -24,7 +24,7 @@ var viewIdSubmitRoute = web.Route{
 			r.Error(err, http.StatusUnprocessableEntity)
 			return
 		}
-		profileResponse, err := client.GetProfile(id, "dev2:8252/u/" + user.Username, eid.KeyPair{
+		profileResponse, err := client.GetProfile(id, r.Request.HttpRequest.Host + "/id/" + user.Username, eid.KeyPair{
 			PublicKey: []byte(userKey.PublicKey),
 			PrivateKey: []byte(userKey.PrivateKey),
 		})

@@ -10,8 +10,8 @@ import (
 
 func GetProfile(eidUrl string, clientEid string, clientKey eid.KeyPair) (*api.ProfileGetResponse, error) {
 	// Execute http request and get response
-	url := "http://" + eidUrl + "/profile"
-	responseBody, err := getResponse(url, api.ProfileRequest{
+	url := "https://" + convertEidUrl(eidUrl) + "/profile"
+	getProfileResponseBody, err := getResponse(url, api.ProfileRequest{
 		Name: "/get",
 		Eid: clientEid,
 	})
@@ -24,7 +24,7 @@ func GetProfile(eidUrl string, clientEid string, clientKey eid.KeyPair) (*api.Pr
 		return nil, err
 	}
 
-	decrypted, err := pgp.Decrypt(pgpEntity, responseBody)
+	decrypted, err := pgp.Decrypt(pgpEntity, getProfileResponseBody)
 	if err != nil {
 		return nil, err
 	}
