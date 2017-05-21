@@ -13,6 +13,7 @@ const (
 	URL_EDIT_PROFILE_SUBMIT = "/edit-profile-submit"
 	URL_VIEW_ID_SUBMIT = "/view-id-submit"
 	URL_CONTACT_ADD_SUBMIT = "/contact-add-submit"
+	URL_CONTACT_DELETE_SUBMIT = "/contact-delete-submit"
 	URL_CONTACT_LIST = "/contact-list"
 	URL_SIGNUP = "/signup"
 	URL_SIGNUP_SUBMIT = "/signup-submit"
@@ -72,6 +73,7 @@ func Run() error {
 			loginSubmitRoute,
 			logoutRoute,
 			contactAddSubmit,
+			contactDeleteSubmit,
 			contactList,
 		},
 		StaticFilesDir: "pub",

@@ -29,10 +29,29 @@
             });
         },
         /**
-         * @param {jQuery} $contactForm
+         * @param {jQuery} $deleteContactForm
+         * @param {int} contactId
          * @param {jQuery} $contactList
          */
-        AddContact: function ($contactForm, $contactList) {
+        DeleteContact: function($deleteContactForm, contactId, $contactList) {
+            $deleteContactForm.submit(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: iiApp.BaseUrl.Get() + iiApp.URL.ContactDeleteSubmit,
+                    data: {
+                        contactId: contactId
+                    },
+                    success: function() {
+                        iiApp.Section.ContactList($contactList);
+                    }
+                })
+            });
+        },
+        /**
+         * @param {jQuery} $contactForm
+         */
+        AddContact: function ($contactForm) {
             $contactForm.submit(function (e) {
                 e.preventDefault();
                 var id = $contactForm.find("[name=id]").val();
@@ -43,16 +62,15 @@
                         id: id
                     },
                     success: function() {
-                        iiApp.Section.ContactList($contactList);
+                        iiApp.Section.ContactList();
                     }
                 })
             });
         },
         /**
          * @param {jQuery} $form
-         * @param {jQuery} $profileArea
          */
-        ViewId: function ($form, $profileArea) {
+        ViewId: function ($form) {
             $form.submit(function (e) {
                 e.preventDefault();
                 var id = $form.find("[name=id]").val();
@@ -63,7 +81,7 @@
                         id: id
                     },
                     success: function(data) {
-                        $profileArea.html(data);
+                        iiApp.Elements.$profileViewArea.html(data);
                     }
                 })
             });

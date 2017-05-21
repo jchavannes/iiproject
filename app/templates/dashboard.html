@@ -19,11 +19,11 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Contacts</div>
                     <div class="panel-body">
-                        <form id="add-contact">
-                            <div class="row">
-                                <div id="contact-list" class="col-sm-12">
-                                </div>
+                        <div class="row">
+                            <div id="contact-list" class="col-sm-12">
                             </div>
+                        </div>
+                        <form id="add-contact">
                             <div class="row">
                                 <div class="col-md-2">
                                     <label for="input-id">eId</label>
@@ -71,9 +71,11 @@
 
 <script type="text/javascript">
     $(function() {
-        iiApp.Form.ViewId($("#view-id"), $("#profile-area"));
-        iiApp.Form.AddContact($("#add-contact"), $("#contact-list"));
-        iiApp.Section.ContactList($("#contact-list"));
+        iiApp.Elements.SetContactList($("#contact-list"));
+        iiApp.Elements.SetProfileViewArea($("#profile-area"));
+        iiApp.Form.ViewId($("#view-id"));
+        iiApp.Form.AddContact($("#add-contact"));
+        iiApp.Section.ContactList();
     });
 </script>
 

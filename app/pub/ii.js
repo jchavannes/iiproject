@@ -11,6 +11,7 @@ var iiApp;
             Dashboard: "dashboard",
             EditProfileSubmit: "edit-profile-submit",
             ContactAddSubmit: "contact-add-submit",
+            ContactDeleteSubmit: "contact-delete-submit",
             ContactList: "contact-list",
             ViewIdSubmit: "view-id-submit",
             SignupSubmit: "signup-submit",

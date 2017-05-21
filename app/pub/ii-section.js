@@ -1,9 +1,6 @@
 (function () {
     iiApp.Section = {
-        /**
-         * @param {jQuery} $contactList
-         */
-        ContactList: function ($contactList) {
+        ContactList: function () {
             $.ajax({
                 url: iiApp.URL.ContactList,
                 success: function (data) {
@@ -15,7 +12,7 @@
                         console.log(e);
                         return;
                     }
-                    iiApp.Template.ContactList($contactList, contacts);
+                    iiApp.Template.ContactList(iiApp.Elements.$contactList, contacts);
                 }
             });
         }

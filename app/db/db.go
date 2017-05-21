@@ -80,3 +80,17 @@ func save(value interface{}) *gorm.DB {
 	}
 	return result
 }
+
+func remove(value interface{}) *gorm.DB {
+	db, _ := getDb()
+	if db.Error != nil {
+		fmt.Printf("Db error: %s\n", db.Error)
+		return db
+	}
+	result := db.Delete(value)
+	if result.Error != nil {
+		fmt.Printf("Db error: %s\n", result.Error)
+		return result
+	}
+	return result
+}
