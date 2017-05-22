@@ -36,6 +36,9 @@
         DeleteContact: function($deleteContactForm, contactId, $contactList) {
             $deleteContactForm.submit(function (e) {
                 e.preventDefault();
+                if (!confirm("Are you sure you want to delete this contact?")) {
+                    return;
+                }
                 $.ajax({
                     type: "POST",
                     url: iiApp.BaseUrl.Get() + iiApp.URL.ContactDeleteSubmit,

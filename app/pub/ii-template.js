@@ -10,23 +10,21 @@
             for (i = 0; i < contacts.length; i++) {
                 contact = contacts[i];
                 contactListHtml +=
-                    "<div class='row'>" +
-                    "<div class='col-sm-6'>" +
-                    "<p>" +
+                    "<tr>" +
+                    "<td>" +
                     contact.Eid +
-                    "</p>" +
-                    "</div>" +
-                    "<div class='col-sm-6'>" +
+                    "</td>" +
+                    "<td>" +
                     "<form style='display:inline;' id='view-profile-" + contact.Id + "'>" +
                     "<input type='hidden' name='id' value='" + contact.Eid + "' />" +
-                    "<input type='submit' class='btn btn-primary' value='View' />" +
+                    "<input type='submit' class='btn btn-primary btn-xs' value='View' />" +
                     "</form>" +
                     " " +
                     "<form style='display:inline;' id='delete-contact-" + contact.Id + "'>" +
-                    "<input type='submit' class='btn btn-danger' value='Delete' />" +
+                    "<input type='submit' class='btn btn-danger btn-xs' value='Remove' />" +
                     "</form>" +
-                    "</div>" +
-                    "</div>";
+                    "</td>" +
+                    "</tr>";
             }
             if (contacts.length === 0) {
                 contactListHtml =
@@ -35,15 +33,19 @@
                     "</p>";
             } else {
                 contactListHtml =
-                    "<div class='row'>" +
-                    "<div class='col-sm-6'>" +
-                    "<h4>Name</h4>" +
-                    "</div>" +
-                    "<div class='col-sm-6'>" +
-                    "<h4>Actions</h4>" +
-                    "</div>" +
-                    "</div>" +
-                    contactListHtml;
+                    "<div class='table-responsive'>" +
+                    "<table class='table table-bordered table-striped'>" +
+                    "<thead>" +
+                    "<tr>" +
+                    "<th>Name</th>" +
+                    "<th>Actions</th>" +
+                    "</tr>" +
+                    "</thead>" +
+                    "<tbody>" +
+                    contactListHtml +
+                    "</tbody>" +
+                    "</table>" +
+                    "</div>";
             }
             contactListHtml =
                 "<h3>Contact List</h3>" +

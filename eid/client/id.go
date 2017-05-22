@@ -29,7 +29,7 @@ func convertEidUrl(eidUrl string) string {
 		return eidUrl
 	}
 
-	reg := regexp.MustCompile(`^[^@]@`)
+	reg := regexp.MustCompile(`^[^@]+@`)
 	username := reg.FindString(eidUrl)
 	username = username[:len(username) - 1]
 	domain := reg.ReplaceAllString(eidUrl, "")

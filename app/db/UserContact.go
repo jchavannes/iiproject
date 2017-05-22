@@ -11,7 +11,6 @@ type UserContact struct {
 	ContactId uint `gorm:"unique_index:user_contact"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	DeletedAt *time.Time `sql:"index"`
 }
 
 func AddUserContact(userId uint, contactId uint) error {

@@ -9,6 +9,7 @@ import (
 const (
 	URL_INDEX = "/"
 	URL_DASHBOARD = "/dashboard"
+	URL_MESSAGES = "/messages"
 	URL_EDIT_PROFILE = "/edit-profile"
 	URL_EDIT_PROFILE_SUBMIT = "/edit-profile-submit"
 	URL_VIEW_ID_SUBMIT = "/view-id-submit"
@@ -64,6 +65,7 @@ func Run() error {
 		Routes: []web.Route{
 			indexRoute,
 			dashboardRoute,
+			messagesRoute,
 			editProfileRoute,
 			editProfileSubmitRoute,
 			viewIdSubmitRoute,
