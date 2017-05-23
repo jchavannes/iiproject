@@ -34,11 +34,13 @@
                         <form id="new-message">
                             <p>
                                 <label for="form-recipient">Recipient</label>
+                                <!--email_off-->
                                 <select id="form-recipient" name="recipient" class="form-control">
                                     {{ range $i, $contact := .Contacts }}
                                     <option>{{ $contact.Eid }}</option>
                                     {{ end }}
                                 </select>
+                                <!--/email_off-->
                             </p>
                             <p>
                                 <label for="form-message">Message</label>
