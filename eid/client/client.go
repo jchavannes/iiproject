@@ -7,15 +7,18 @@ import (
 	"encoding/json"
 )
 
-func getResponse(url string, postData interface{}) ([]byte, error) {
+func getResponseJson(url string, postData interface{}) ([]byte, error) {
 	// Convert post data to json
 	postDataJson, err := json.Marshal(postData)
 	if err != nil {
 		return []byte{}, err
 	}
+	return getResponse(url, postDataJson)
+}
 
+func getResponse(url string, data []byte) ([]byte, error) {
 	// Create and execute http request
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(postDataJson))
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(data))
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {

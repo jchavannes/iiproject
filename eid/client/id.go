@@ -10,7 +10,7 @@ import (
 func GetId(eidUrl string) (*api.IdGetResponse, error) {
 	// Execute http request and get response
 	url := "https://" + convertEidUrl(eidUrl) + "/id"
-	responseBody, err := getResponse(url, api.IdRequest{
+	responseBody, err := getResponseJson(url, api.IdRequest{
 		Name: "/get",
 	})
 

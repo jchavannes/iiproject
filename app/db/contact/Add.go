@@ -5,15 +5,13 @@ import (
 )
 
 func AddContact(eid string, publicKey string, userId uint) error {
+	var contact *db.Contact
 	contact, err := db.GetContact(eid)
-	var contactId uint
 	if err != nil {
-		contactId, err = db.AddContact(eid, publicKey)
+		contact, err = db.AddContact(eid, publicKey)
 		if err != nil {
 			return err
 		}
-	} else {
-		contactId = contact.Id
 	}
-	return db.AddUserContact(userId, contactId)
+	return db.AddUserContact(userId, contact.Id)
 }

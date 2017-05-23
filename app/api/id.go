@@ -8,8 +8,8 @@ import (
 	"net/http"
 )
 
-var userIdRoute = web.Route{
-	Pattern: PATTERN_USER_ID,
+var idRoute = web.Route{
+	Pattern: PATTERN_ID,
 	Handler: func(r *web.Response) {
 		username := r.Request.GetUrlNamedQueryVariable("username")
 		user, _ := db.GetUserByUsername(username)

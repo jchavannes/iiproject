@@ -3,15 +3,14 @@ package api
 import (
 	"github.com/jchavannes/iiproject/app/db"
 	"github.com/jchavannes/iiproject/app/db/key"
-	"github.com/jchavannes/iiproject/app/db/profile"
+	"github.com/jchavannes/iiproject/app/db/message"
 	"github.com/jchavannes/iiproject/eid/server"
 	"github.com/jchavannes/jgo/web"
 	"net/http"
-	"strings"
 )
 
-var userProfileRoute = web.Route{
-	Pattern: PATTERN_USER_PROFILE,
+var messageRoute = web.Route{
+	Pattern: PATTERN_MESSAGE,
 	Handler: func(r *web.Response) {
 		username := r.Request.GetUrlNamedQueryVariable("username")
 		user, _ := db.GetUserByUsername(username)
@@ -26,22 +25,21 @@ var userProfileRoute = web.Route{
 			return
 		}
 
-		profileString, err := profile.Get(user.Id)
+		messageSend, messageResponse, err := server.ProcessMessageRequest(
+			r.Request.GetBody(),
+			userKey.GetKeyPair(),
+		)
 		if err != nil {
 			r.Error(err, http.StatusInternalServerError)
-		}
-
-		profileResponse, err := server.ProcessProfileRequest(
-			r.Request.GetBody(),
-			userKey.PublicKey,
-			userKey.PrivateKey,
-			strings.NewReader(profileString),
-		)
-
-		if err != nil {
-			r.Error(err, http.StatusBadRequest)
 			return
 		}
-		r.Write(string(profileResponse))
+
+		err = message.Add(user.Id, messageSend.Eid, messageSend, false)
+		if err != nil {
+			r.Error(err, http.StatusInternalServerError)
+			return
+		}
+
+		r.Write(string(messageResponse))
 	},
 }

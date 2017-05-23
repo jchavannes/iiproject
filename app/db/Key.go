@@ -2,6 +2,7 @@ package db
 
 import (
 	"time"
+	"github.com/jchavannes/iiproject/eid"
 )
 
 type Key struct {
@@ -17,6 +18,14 @@ type Key struct {
 func (k *Key) Save() error {
 	result := save(&k)
 	return result.Error
+}
+
+func (k *Key) GetKeyPair() eid.KeyPair {
+	keyPair := eid.KeyPair{
+		PublicKey: k.PublicKey,
+		PrivateKey: k.PrivateKey,
+	}
+	return keyPair
 }
 
 func GetKeyByUserId(userId uint) (*Key, error) {

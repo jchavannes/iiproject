@@ -14,16 +14,16 @@ type Contact struct {
 	UpdatedAt time.Time
 }
 
-func AddContact(eid string, publicKey string) (uint, error) {
-	contact := Contact{
+func AddContact(eid string, publicKey string) (*Contact, error) {
+	contact := &Contact{
 		Eid: eid,
 		PublicKey: publicKey,
 	}
-	result := save(&contact)
+	result := save(contact)
 	if result.Error != nil {
-		return 0, result.Error
+		return nil, result.Error
 	}
-	return contact.Id, nil
+	return contact, nil
 }
 
 func GetContact(eid string) (*Contact, error) {

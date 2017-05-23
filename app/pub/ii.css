@@ -46,3 +46,6 @@ footer p {
 #contact-list h3 {
     margin-top: 0;
 }
+#new-message textarea {
+    height: 125px;
+}

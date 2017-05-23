@@ -2,6 +2,27 @@
     var profileSavedTimeout;
     iiApp.Form = {
         /**
+         * @param {jQuery} $messageForm
+         */
+        SendMessage: function ($messageForm) {
+            $messageForm.submit(function (e) {
+                e.preventDefault();
+                var recipient = $messageForm.find("[name=recipient]").val();
+                var message = $messageForm.find("[name=message]").val();
+                $.ajax({
+                    type: "POST",
+                    url: iiApp.BaseUrl.Get() + iiApp.URL.MessagesSendSubmit,
+                    data: {
+                        recipientEid: recipient,
+                        message: message
+                    },
+                    success: function (data) {
+                        console.log(data);
+                    }
+                })
+            })
+        },
+        /**
          * @param {jQuery} $form
          * @param {jQuery} $profileSaved
          */
@@ -15,10 +36,10 @@
                     data: {
                         profile: profile
                     },
-                    success: function() {
+                    success: function () {
                         $profileSaved.show();
                         clearTimeout(profileSavedTimeout);
-                        profileSavedTimeout = setTimeout(function() {
+                        profileSavedTimeout = setTimeout(function () {
                             $profileSaved.hide();
                         }, 1500);
                     },
@@ -31,9 +52,8 @@
         /**
          * @param {jQuery} $deleteContactForm
          * @param {int} contactId
-         * @param {jQuery} $contactList
          */
-        DeleteContact: function($deleteContactForm, contactId, $contactList) {
+        DeleteContact: function ($deleteContactForm, contactId) {
             $deleteContactForm.submit(function (e) {
                 e.preventDefault();
                 if (!confirm("Are you sure you want to delete this contact?")) {
@@ -45,8 +65,8 @@
                     data: {
                         contactId: contactId
                     },
-                    success: function() {
-                        iiApp.Section.ContactList($contactList);
+                    success: function () {
+                        iiApp.Section.ContactList();
                     }
                 })
             });
@@ -64,7 +84,7 @@
                     data: {
                         id: id
                     },
-                    success: function() {
+                    success: function () {
                         iiApp.Section.ContactList();
                     }
                 })
@@ -83,7 +103,7 @@
                     data: {
                         id: id
                     },
-                    success: function(data) {
+                    success: function (data) {
                         iiApp.Elements.$profileViewArea.html(data);
                     }
                 })

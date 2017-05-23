@@ -5,16 +5,18 @@ import (
 )
 
 const (
-	PATTERN_USER_ID = "/{username}/id"
-	PATTERN_USER_PROFILE = "/{username}/profile"
+	PATTERN_ID = "/{username}/id"
+	PATTERN_PROFILE = "/{username}/profile"
+	PATTERN_MESSAGE = "/{username}/message"
 )
 
 func Run() error {
 	server := web.Server{
 		Port: 8253,
 		Routes: []web.Route{
-			userIdRoute,
-			userProfileRoute,
+			idRoute,
+			profileRoute,
+			messageRoute,
 		},
 	}
 	return server.Run()

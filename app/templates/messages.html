@@ -19,9 +19,35 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Inbox</div>
                     <div id="inbox" class="panel-body">
+                        {{ range $i, $message := .Messages }}
                         <p>
-                            No Messages
+                            {{ $message.Message }}
                         </p>
+                        {{ end }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">New Message</div>
+                    <div class="panel-body">
+                        <form id="new-message">
+                            <p>
+                                <label for="form-recipient">Recipient</label>
+                                <select id="form-recipient" name="recipient" class="form-control">
+                                    {{ range $i, $contact := .Contacts }}
+                                    <option>{{ $contact.Eid }}</option>
+                                    {{ end }}
+                                </select>
+                            </p>
+                            <p>
+                                <label for="form-message">Message</label>
+                                <textarea id="form-message" name="message" class="form-control"></textarea>
+                            </p>
+                            <p>
+                                <input type="submit" class="btn btn-primary" value="Send" />
+                            </p>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -31,7 +57,7 @@
 
 <script type="text/javascript">
     $(function() {
-
+        iiApp.Form.SendMessage($("#new-message"));
     });
 </script>
 

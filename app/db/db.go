@@ -16,6 +16,7 @@ var (
 		Session{},
 		Profile{},
 		Contact{},
+		Message{},
 		UserContact{},
 	}
 )
