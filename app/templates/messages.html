@@ -16,16 +16,6 @@
                         </p>
                     </div>
                 </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">Inbox</div>
-                    <div id="inbox" class="panel-body">
-                        {{ range $i, $message := .Messages }}
-                        <p>
-                            {{ $message.Message }}
-                        </p>
-                        {{ end }}
-                    </div>
-                </div>
             </div>
             <div class="col-md-6">
                 <div class="panel panel-default">
@@ -47,9 +37,43 @@
                                 <textarea id="form-message" name="message" class="form-control"></textarea>
                             </p>
                             <p>
-                                <input type="submit" class="btn btn-primary" value="Send" />
+                                <input type="submit" class="btn btn-primary" value="Send"/>
                             </p>
                         </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Inbox</div>
+                    <div id="inbox" class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th>From</th>
+                                    <th>To</th>
+                                    <th>Date</th>
+                                    <th>Message</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {{ range $i, $message := .Messages }}
+                                <tr>
+                                    {{ if $message.Outgoing }}
+                                    <td>Me</td>
+                                    <td>{{ $message.Contact.Eid }}</td>
+                                    {{ else }}
+                                    <td>{{ $message.Contact.Eid }}</td>
+                                    <td>Me</td>
+                                    {{ end }}
+                                    <td>{{ $message.GetFormattedDate }}</td>
+                                    <td>{{ $message.Message }}</td>
+                                </tr>
+                                {{ end }}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -58,7 +82,7 @@
 </div>
 
 <script type="text/javascript">
-    $(function() {
+    $(function () {
         iiApp.Form.SendMessage($("#new-message"));
     });
 </script>

@@ -37,6 +37,17 @@ func GetContact(eid string) (*Contact, error) {
 	return contact, nil
 }
 
+func GetContactById(id uint) (*Contact, error) {
+	contact := &Contact{
+		Id: id,
+	}
+	result := find(contact, contact)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return contact, nil
+}
+
 func GetContacts(contactIds []string) ([]*Contact, error) {
 	var whereIn []string
 

@@ -7,7 +7,9 @@ import (
 
 type Message struct {
 	Id        uint `gorm:"primary_key"`
+	User      *User
 	UserId    uint
+	Contact   *Contact
 	ContactId uint
 	Outgoing  bool
 	Message   string
@@ -19,6 +21,10 @@ type Message struct {
 func (m *Message) Save() error {
 	result := save(m)
 	return result.Error
+}
+
+func (m *Message) GetFormattedDate() string {
+	return m.SendTime.Format(time.RFC3339)
 }
 
 func GetMessages(userId uint) ([]*Message, error) {
