@@ -58,6 +58,16 @@ func find(out interface{}, where ...interface{}) *gorm.DB {
 	return result
 }
 
+func findOrderBy(out interface{}, orderBy string, where ...interface{}) *gorm.DB {
+	db, _ := getDb()
+	result := db.Order(orderBy).Find(out, where...)
+	if result.Error != nil && !result.RecordNotFound() {
+		fmt.Printf("Db error: %s\n", result.Error)
+		return result
+	}
+	return result
+}
+
 func findString(out interface{}, where string, args ...interface{}) *gorm.DB {
 	db, _ := getDb()
 	result := db.Where(where, args...).Find(out)

@@ -29,7 +29,7 @@ func (m *Message) GetFormattedDate() string {
 
 func GetMessages(userId uint) ([]*Message, error) {
 	var messages []*Message
-	result := find(&messages, &Message{
+	result := findOrderBy(&messages, "send_time DESC", &Message{
 		UserId: userId,
 	})
 	if result.Error != nil {
