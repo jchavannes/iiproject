@@ -7,6 +7,7 @@ import (
 	"github.com/jchavannes/iiproject/app/db/auth"
 	"net/http"
 	"github.com/jchavannes/iiproject/app/db/key"
+	"html"
 )
 
 var viewIdSubmitRoute = web.Route{
@@ -32,6 +33,6 @@ var viewIdSubmitRoute = web.Route{
 			r.Error(err, http.StatusUnprocessableEntity)
 			return
 		}
-		r.Write(profileResponse.Body)
+		r.Write(html.EscapeString(profileResponse.Body))
 	},
 }

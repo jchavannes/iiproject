@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"github.com/jchavannes/iiproject/eid/client"
 	"fmt"
+	"github.com/jchavannes/iiproject/eid"
 )
 
 func GetUserContacts(userId uint) ([]*db.Contact, error) {
@@ -23,16 +24,17 @@ func GetUserContacts(userId uint) ([]*db.Contact, error) {
 	return contacts, nil
 }
 
-func Get(eid string) (*db.Contact, error) {
-	contact, err := db.GetContact(eid)
+func Get(eidString string) (*db.Contact, error) {
+	eidString = eid.ConvertFullEidUrlIntoShort(eidString)
+	contact, err := db.GetContact(eidString)
 	if err == nil {
 		return contact, nil
 	}
-	idGetResponse, err := client.GetId(eid)
+	idGetResponse, err := client.GetId(eidString)
 	if err != nil {
 		return nil, fmt.Errorf("Error getting id response: %s", err)
 	}
-	contact, err = db.AddContact(eid, idGetResponse.PublicKey)
+	contact, err = db.AddContact(eidString, idGetResponse.PublicKey)
 	if err != nil {
 		return nil, fmt.Errorf("Error adding contact: %s", err)
 	}

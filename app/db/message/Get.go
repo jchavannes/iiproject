@@ -3,6 +3,7 @@ package message
 import (
 	"github.com/jchavannes/iiproject/app/db"
 	"fmt"
+	"html"
 )
 
 func GetMessages(userId uint) ([]*db.Message, error) {
@@ -28,6 +29,7 @@ func GetMessages(userId uint) ([]*db.Message, error) {
 		}
 		message.User = users[message.UserId]
 		message.Contact = contacts[message.ContactId]
+		message.Message = html.EscapeString(message.Message)
 	}
 	return messages, nil
 }

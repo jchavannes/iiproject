@@ -122,8 +122,12 @@
                     data: {
                         id: id
                     },
-                    success: function (data) {
-                        iiApp.Elements.$profileViewArea.html(data);
+                    /**
+                     * @param {string} profileString
+                     */
+                    success: function (profileString) {
+                        profileString = profileString.replace("\n", "<br/>");
+                        iiApp.Elements.$profileViewArea.html(profileString);
                     }
                 })
             });

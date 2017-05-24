@@ -3,13 +3,12 @@ package client
 import (
 	"github.com/jchavannes/iiproject/eid/api"
 	"encoding/json"
-	"strings"
-	"regexp"
+	"github.com/jchavannes/iiproject/eid"
 )
 
 func GetId(eidUrl string) (*api.IdGetResponse, error) {
 	// Execute http request and get response
-	url := "https://" + convertEidUrl(eidUrl) + "/id"
+	url := "https://" + eid.ConvertShortEidUrlIntoFull(eidUrl) + "/id"
 	responseBody, err := getResponseJson(url, api.IdRequest{
 		Name: "/get",
 	})
@@ -22,17 +21,4 @@ func GetId(eidUrl string) (*api.IdGetResponse, error) {
 	}
 
 	return &idGetResponse, nil
-}
-
-func convertEidUrl(eidUrl string) string {
-	if ! strings.Contains(eidUrl, "@") {
-		return eidUrl
-	}
-
-	reg := regexp.MustCompile(`^[^@]+@`)
-	username := reg.FindString(eidUrl)
-	username = username[:len(username) - 1]
-	domain := reg.ReplaceAllString(eidUrl, "")
-	realEidUrl := domain + "/id/" + username
-	return realEidUrl
 }

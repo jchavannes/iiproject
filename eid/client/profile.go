@@ -11,7 +11,7 @@ import (
 
 func GetProfile(eidUrl string, clientEid string, clientKey eid.KeyPair) (*api.ProfileGetResponse, error) {
 	// Execute http request and get response
-	url := "https://" + convertEidUrl(eidUrl) + "/profile"
+	url := "https://" + eid.ConvertShortEidUrlIntoFull(eidUrl) + "/profile"
 	getProfileResponseBody, err := getResponseJson(url, api.ProfileRequest{
 		Name: "/get",
 		Eid: clientEid,

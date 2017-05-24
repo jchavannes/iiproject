@@ -24,7 +24,7 @@ func SendMessage(recipientEid string, senderEid string, message string, serverPu
 	fmt.Printf("Encrypted: %s\n", encrypted)
 
 	// Execute http request and get response
-	url := "https://" + convertEidUrl(recipientEid) + "/message"
+	url := "https://" + eid.ConvertShortEidUrlIntoFull(recipientEid) + "/message"
 	getMessageSendResponse, err := getResponse(url, encrypted)
 	if err != nil {
 		return nil, fmt.Errorf("Error getting profile response: %s", err)
