@@ -55,6 +55,7 @@
                                     <th>To</th>
                                     <th>Date</th>
                                     <th>Message</th>
+                                    <th>Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -69,6 +70,17 @@
                                     {{ end }}
                                     <td>{{ $message.GetFormattedDate }}</td>
                                     <td>{{ $message.Message }}</td>
+                                    <td>
+                                        <form id="delete-message-{{ $message.Id }}">
+                                            <input type="hidden" name="id" value="{{ $message.Id }}"/>
+                                            <input class="btn btn-xs btn-danger" type="submit" value="Delete"/>
+                                        </form>
+                                        <script type="text/javascript">
+                                            $(function () {
+                                                iiApp.Form.DeleteMessage($("#delete-message-{{ $message.Id }}"));
+                                            })
+                                        </script>
+                                    </td>
                                 </tr>
                                 {{ end }}
                                 </tbody>

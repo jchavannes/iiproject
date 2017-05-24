@@ -14,6 +14,7 @@ var iiApp;
             ContactDeleteSubmit: "contact-delete-submit",
             ContactList: "contact-list",
             MessagesSendSubmit: "messages-send-submit",
+            MessagesDeleteSubmit: "messages-delete-submit",
             Inbox: "inbox",
             ViewIdSubmit: "view-id-submit",
             SignupSubmit: "signup-submit",

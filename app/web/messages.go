@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"github.com/jchavannes/iiproject/eid"
 	"github.com/jchavannes/iiproject/app/db/contact"
+	"strconv"
 )
 
 var messagesRoute = web.Route{
@@ -18,6 +19,7 @@ var messagesRoute = web.Route{
 	Handler: func(r *web.Response) {
 		if ! auth.IsLoggedIn(r.Session.CookieId) {
 			r.SetRedirect(getUrlWithBaseUrl(URL_INDEX, r))
+			return
 		}
 
 		user, err := auth.GetSessionUser(r.Session.CookieId)
@@ -81,6 +83,36 @@ var messagesSendSubmitRoute = web.Route{
 		err = message.Add(user.Id, recipientEid, sendMessage, true)
 		if err != nil {
 			r.Error(fmt.Errorf("Error adding message to database: %s", err), http.StatusUnprocessableEntity)
+			return
+		}
+	},
+}
+
+var messagesDeleteSubmitRoute = web.Route{
+	Pattern: URL_MESSAGES_DELETE_SUBMIT,
+	CsrfProtect: true,
+	Handler: func(r *web.Response) {
+		if ! auth.IsLoggedIn(r.Session.CookieId) {
+			r.SetRedirect(getUrlWithBaseUrl(URL_INDEX, r))
+			return
+		}
+
+		messageIdString := r.Request.GetFormValue("id")
+		messageId, err := strconv.Atoi(messageIdString)
+		if err != nil {
+			r.Error(fmt.Errorf("Unable to get session user: %s", err), http.StatusUnprocessableEntity)
+			return
+		}
+
+		user, err := auth.GetSessionUser(r.Session.CookieId)
+		if err != nil {
+			r.Error(fmt.Errorf("Unable to get session user: %s", err), http.StatusUnprocessableEntity)
+			return
+		}
+
+		err = message.Delete(uint(messageId), user.Id)
+		if err != nil {
+			r.Error(fmt.Errorf("Unable to delete message: %s", err), http.StatusUnprocessableEntity)
 			return
 		}
 	},

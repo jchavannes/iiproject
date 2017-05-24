@@ -11,6 +11,7 @@ const (
 	URL_DASHBOARD = "/dashboard"
 	URL_MESSAGES = "/messages"
 	URL_MESSAGES_SEND_SUBMIT = "/messages-send-submit"
+	URL_MESSAGES_DELETE_SUBMIT = "/messages-delete-submit"
 	URL_EDIT_PROFILE = "/edit-profile"
 	URL_EDIT_PROFILE_SUBMIT = "/edit-profile-submit"
 	URL_VIEW_ID_SUBMIT = "/view-id-submit"
@@ -68,6 +69,7 @@ func Run() error {
 			dashboardRoute,
 			messagesRoute,
 			messagesSendSubmitRoute,
+			messagesDeleteSubmitRoute,
 			editProfileRoute,
 			editProfileSubmitRoute,
 			viewIdSubmitRoute,

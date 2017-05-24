@@ -16,8 +16,27 @@
                         recipientEid: recipient,
                         message: message
                     },
-                    success: function (data) {
-                        console.log(data);
+                    success: function () {
+                        window.location.reload();
+                    }
+                })
+            })
+        },
+        /**
+         * @param {jQuery} $deleteMessageForm
+         */
+        DeleteMessage: function ($deleteMessageForm) {
+            $deleteMessageForm.submit(function (e) {
+                e.preventDefault();
+                var messageId = $deleteMessageForm.find("[name=id]").val();
+                $.ajax({
+                    type: "POST",
+                    url: iiApp.BaseUrl.Get() + iiApp.URL.MessagesDeleteSubmit,
+                    data: {
+                        id: messageId
+                    },
+                    success: function () {
+                        window.location.reload();
                     }
                 })
             })

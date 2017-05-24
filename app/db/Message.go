@@ -37,3 +37,15 @@ func GetMessages(userId uint) ([]*Message, error) {
 	}
 	return messages, nil
 }
+
+func DeleteMessage(messageId uint, userId uint) error {
+	message := Message{
+		Id: messageId,
+		UserId: userId,
+	}
+	result := remove(&message)
+	if result.Error != nil {
+		return fmt.Errorf("Error deleting message: %s", result.Error)
+	}
+	return nil
+}
